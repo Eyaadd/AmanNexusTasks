@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Week2AmanTasksXML</string>
+    <string name="loginScreen_title">Sign in to your account</string>
+    <string name="email_address_text">Email Address</string>
+    <string name="password_text">Password</string>
+    <string name="forgot_password_text">Forgot password?</string>
+    <string name="other_way_to_sign_in_text">other way to sign in</string>
+    <string name="create_account_text">Don\'t have an account? <font color="#2E7D32">Create Account</font></string>
+    <string name="agreement_text">I’ve read and agreed to User Agreement\nand Privacy Policy</string>
+</resources>
