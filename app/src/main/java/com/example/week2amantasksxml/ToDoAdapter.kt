@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class ToDoAdapter(
-   private var toDoList: List<ToDoData>
-): RecyclerView.Adapter<ToDoAdapter.TodoViewHolder>() {
+//   private var toDoList: List<ToDoData>
+
+): ListAdapter<ToDoData, ToDoAdapter.TodoViewHolder>(TodoDiffCallback()) {
 
     class TodoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
@@ -32,49 +34,32 @@ class ToDoAdapter(
         holder: TodoViewHolder,
         position: Int
     ) {
-        holder.textView.text= toDoList[position].title
-        holder.checkboxView.isChecked = toDoList[position].isChecked
-    }
-
-    override fun getItemCount(): Int {
-        return toDoList.size
-    }
-
-    fun updateList(newList: List<ToDoData>) {
-
-        val diffCallback = TodoDiffUtil(toDoList, newList)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-
-        toDoList = newList
-        diffResult.dispatchUpdatesTo(this)
+        val todo = getItem(position)
+        holder.textView.text= todo.title
+        holder.checkboxView.isChecked = todo.isChecked
     }
 
 }
 
 
 
-class TodoDiffUtil(
-    private val oldList: List<ToDoData>,
-    private val newList: List<ToDoData>
-) : DiffUtil.Callback() {
+class TodoDiffCallback(
+) : DiffUtil.ItemCallback<ToDoData>() {
 
-    override fun getOldListSize() = oldList.size
-
-    override fun getNewListSize() = newList.size
 
     override fun areItemsTheSame(
-        oldItemPosition: Int,
-        newItemPosition: Int
+        oldItem: ToDoData,
+        newItem: ToDoData
     ): Boolean {
-        return oldList[oldItemPosition].id ==
-                newList[newItemPosition].id
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(
-        oldItemPosition: Int,
-        newItemPosition: Int
+        oldItem: ToDoData,
+        newItem: ToDoData
     ): Boolean {
-        return oldList[oldItemPosition] ==
-                newList[newItemPosition]
+        return oldItem == newItem
     }
+
+
 }

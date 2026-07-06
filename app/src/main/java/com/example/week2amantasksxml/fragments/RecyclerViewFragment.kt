@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.week2amantasksxml.ToDoAdapter
 import com.example.week2amantasksxml.ToDoData
 import com.example.week2amantasksxml.databinding.RecyclerViewScreenBinding
-import kotlin.text.clear
-import kotlin.toString
 
 class RecyclerViewFragment : Fragment() {
 
@@ -46,30 +46,67 @@ class RecyclerViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ToDoAdapter(toDoList)
+        adapter = ToDoAdapter()
+        adapter.submitList(toDoList)
+        val itemTouchHelper =
+            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+                0,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            ) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
 
-        binding.rvtodo.adapter = adapter
-        binding.rvtodo.layoutManager = LinearLayoutManager(requireContext())
+                override fun onSwiped(
+                    viewHolder: RecyclerView.ViewHolder,
+                    direction: Int
+                ) {
+                    if (viewHolder.bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                        val position = viewHolder.bindingAdapterPosition
+                        deleteItem(position)
 
-        binding.addbutton.setOnClickListener {
-            if (binding.edittext.text.isNotEmpty()) {
+                    }
+                }
 
-                val newItem = ToDoData(
-                    id = nextID++,
-                    title = binding.edittext.text.toString(),
-                    isChecked = false,
+            })
+        binding.apply {
+            rvtodo.adapter = adapter
+            rvtodo.layoutManager = LinearLayoutManager(requireContext())
+            addbutton.setOnClickListener {
+                if (binding.edittext.text.isNotEmpty()) {
+
+                    val newItem = ToDoData(
+                        id = nextID++,
+                        title = binding.edittext.text.toString(),
+                        isChecked = false,
                     )
 
-                val newList = toDoList.toMutableList()
-                newList.add(newItem)
+                    val newList = adapter.currentList.toMutableList()
+                    newList.add(newItem)
 
-                toDoList = newList
+                    toDoList = newList
 
-                adapter.updateList(newList)
+                    adapter.submitList(newList)
 
-                binding.edittext.text.clear()
+                    binding.edittext.text.clear()
+                }
             }
+            itemTouchHelper.attachToRecyclerView(rvtodo)
         }
+
+
+    }
+
+    private fun deleteItem(position: Int) {
+        val newList = adapter.currentList.toMutableList()
+        newList.removeAt(position)
+        toDoList = newList
+        adapter.submitList(newList)
     }
 
 }
+
