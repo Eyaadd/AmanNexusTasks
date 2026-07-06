@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.week2amantasksxml.R
 import com.example.week2amantasksxml.ToDoAdapter
 import com.example.week2amantasksxml.ToDoData
@@ -16,6 +17,8 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
+    private val args: DetailsFragmentArgs by navArgs()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,6 +26,7 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        binding.tvUsername.text = args.username
         return binding.root
     }
 

@@ -27,8 +27,16 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+       // Send List that has 5 users, and then display them in the recycler view screen without using singleton
+
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_detailsFragment)
+            val action =
+                HomeFragmentDirections
+                    .actionHomeFragmentToDetailsFragment(
+                        binding.usernameEdtText.text.toString().trim()
+                    )
+
+            findNavController().navigate(action)
         }
         binding.btnCall.setOnClickListener {
             startActivity(Intent(Intent.ACTION_DIAL))

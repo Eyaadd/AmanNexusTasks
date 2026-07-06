@@ -4,26 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Home Fragment"
         android:textSize="24sp"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp" />
+
+    <EditText
+        android:id="@+id/username_edt_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your name"
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/btnNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go to Details"/>
+        android:text="Go to Details"
+        android:layout_marginBottom="12dp" />
 
     <Button
         android:id="@+id/btnCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open Dialer"/>
-
+        android:text="Open Dialer" />
 
 </LinearLayout>
