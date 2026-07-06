@@ -1,6 +1,7 @@
 package com.example.week2amantasksxml
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
@@ -13,14 +14,24 @@ import androidx.recyclerview.widget.RecyclerView
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity_main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
 
+
+    }
+}
+
+fun View.applySystemBarsPadding() {
+    ViewCompat.setOnApplyWindowInsetsListener(this) { view, insets ->
+        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+        view.setPadding(
+            systemBars.left,
+            systemBars.top,
+            systemBars.right,
+            systemBars.bottom
+        )
+
+        insets
     }
 }

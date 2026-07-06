@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.week2amantasksxml.R
+import com.example.week2amantasksxml.applySystemBarsPadding
 import com.example.week2amantasksxml.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -21,12 +22,13 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        view.applySystemBarsPadding()
        // Send List that has 5 users, and then display them in the recycler view screen without using singleton
 
         binding.btnNext.setOnClickListener {

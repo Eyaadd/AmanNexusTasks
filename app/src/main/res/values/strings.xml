@@ -7,4 +7,7 @@
     <string name="other_way_to_sign_in_text">other way to sign in</string>
     <string name="create_account_text">Don\'t have an account? <font color="#2E7D32">Create Account</font></string>
     <string name="agreement_text">I’ve read and agreed to User Agreement\nand Privacy Policy</string>
+    <string name="sign_in">Sign in</string>
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email Address</string>
 </resources>

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.week2amantasksxml.ToDoAdapter
 import com.example.week2amantasksxml.ToDoData
+import com.example.week2amantasksxml.applySystemBarsPadding
 import com.example.week2amantasksxml.databinding.RecyclerViewScreenBinding
 
 class RecyclerViewFragment : Fragment() {
@@ -46,6 +47,7 @@ class RecyclerViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.applySystemBarsPadding()
         adapter = ToDoAdapter()
         adapter.submitList(toDoList)
         val itemTouchHelper =

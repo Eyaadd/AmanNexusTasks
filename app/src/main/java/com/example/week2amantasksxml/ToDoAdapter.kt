@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class ToDoAdapter(
-//   private var toDoList: List<ToDoData>
 
 ): ListAdapter<ToDoData, ToDoAdapter.TodoViewHolder>(TodoDiffCallback()) {
 
