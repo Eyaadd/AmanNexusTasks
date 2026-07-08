@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.week2amantasksxml.R
 import com.example.week2amantasksxml.ToDoAdapter
-import com.example.week2amantasksxml.ToDoData
+import com.example.week2amantasksxml.models.ToDoData
 import com.example.week2amantasksxml.databinding.FragmentDetailsBinding
 
 class DetailsFragment : Fragment() {
