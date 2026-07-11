@@ -2,20 +2,18 @@ package com.example.week2amantasksxml
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.week2amantasksxml.compose.SettingsScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.week2amantasksxml.navigation.AppNavHost
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,21 +24,21 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         // Compose View
         setContent {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SettingsScreen(modifier = Modifier.padding(innerPadding))
-                }
+            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                MyApp(modifier = Modifier.padding(innerPadding))
+            }
 
         }
 
     }
 }
 
+@Composable
+fun MyApp(modifier: Modifier = Modifier) {
+    val navController = rememberNavController()
 
-
-
-
-
-
+    AppNavHost(navController = navController, modifier = modifier)
+}
 
 
 fun View.applySystemBarsPadding() {

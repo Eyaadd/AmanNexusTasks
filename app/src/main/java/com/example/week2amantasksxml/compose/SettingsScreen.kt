@@ -1,5 +1,6 @@
 package com.example.week2amantasksxml.compose
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,7 +42,7 @@ import com.example.week2amantasksxml.theme.primaryText
 
 
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier) {
+fun SettingsScreen(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
 
     val categories = listOf(
         Category(R.drawable.ic_burger, "Burger"),
@@ -67,6 +68,9 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_backward),
                 contentDescription = null,
+                modifier = Modifier.clickable(
+                    onClick = onClick
+                )
             )
             Text(
                 "My account",
@@ -213,11 +217,6 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
         }
     }
 }
-
-
-
-
-
 
 
 @Preview(showBackground = true)

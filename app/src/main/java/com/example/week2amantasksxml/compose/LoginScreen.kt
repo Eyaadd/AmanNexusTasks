@@ -1,12 +1,9 @@
 package com.example.week2amantasksxml.compose
 
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,11 +38,12 @@ import com.example.week2amantasksxml.theme.manropeSemiBold
 
 
 @Composable
-fun LoginScreenContent() {
+fun LoginScreenContent(onSignInClicked: () -> Unit = {},modifier: Modifier = Modifier) {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var isChecked by rememberSaveable() { mutableStateOf(false) }
     LoginScreenComposable(
+        modifier = modifier,
         email = email,
         password = password,
         isChecked = isChecked,
@@ -53,7 +51,8 @@ fun LoginScreenContent() {
         onPasswordChange = { password = it },
         onCheckChanged = {
             isChecked = !isChecked
-        })
+        },
+        onSignInClicked = onSignInClicked)
 }
 
 
@@ -64,6 +63,7 @@ fun LoginScreenComposable(
     onEmailChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
+    onSignInClicked: () -> Unit,
     isChecked: Boolean,
     onCheckChanged: () -> Unit,
 ) {
@@ -122,7 +122,7 @@ fun LoginScreenComposable(
         )
         Spacer(Modifier.size(40.dp))
         Button(
-            onClick = {}, modifier = Modifier
+            onClick = onSignInClicked, modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
             colors = ButtonColors(

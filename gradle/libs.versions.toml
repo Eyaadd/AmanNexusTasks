@@ -8,6 +8,7 @@ appcompat = "1.7.1"
 activity = "1.13.0"
 activityCompose = "1.10.1"
 constraintlayout = "2.1.4"
+navigationCompose = "2.9.8"
 recyclerview = "1.4.0"
 
 material = "1.14.0"
@@ -33,6 +34,7 @@ androidx-activity-compose = { group = "androidx.activity", name = "activity-comp
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 # Material XML
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
