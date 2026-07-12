@@ -1,4 +1,4 @@
-package com.example.week2amantasksxml.compose
+package com.example.week2amantasksxml.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

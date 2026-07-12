@@ -8,24 +8,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.compose.rememberNavController
-import com.example.week2amantasksxml.navigation.AppNavHost
+import com.example.week2amantasksxml.screens.CounterScreen
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // For XML View
-//        setContentView(R.layout.activity_main)
         enableEdgeToEdge()
+        // For XML View
+
+//        setContentView(R.layout.activity_main)
         // Compose View
+
         setContent {
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                MyApp(modifier = Modifier.padding(innerPadding))
+                CounterScreen(
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
 
         }
@@ -33,12 +34,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-@Composable
-fun MyApp(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
 
-    AppNavHost(navController = navController, modifier = modifier)
-}
 
 
 fun View.applySystemBarsPadding() {

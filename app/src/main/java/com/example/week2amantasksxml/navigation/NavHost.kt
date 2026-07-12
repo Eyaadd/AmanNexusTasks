@@ -5,8 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.week2amantasksxml.compose.LoginScreenContent
-import com.example.week2amantasksxml.compose.SettingsScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.week2amantasksxml.screens.LoginScreenContent
+import com.example.week2amantasksxml.screens.SettingsScreen
 
 @Composable
 fun AppNavHost(
@@ -34,4 +35,13 @@ fun AppNavHost(
             )
         }
     }
+}
+
+
+
+@Composable
+fun MyApp(modifier: Modifier = Modifier) {
+    val navController = rememberNavController()
+
+    AppNavHost(navController = navController, modifier = modifier)
 }

@@ -1,4 +1,4 @@
-package com.example.week2amantasksxml.compose
+package com.example.week2amantasksxml.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,8 +35,8 @@ import coil3.compose.AsyncImage
 import com.example.week2amantasksxml.R
 import com.example.week2amantasksxml.components.CategoryItem
 import com.example.week2amantasksxml.components.SettingsSection
-import com.example.week2amantasksxml.model.Category
-import com.example.week2amantasksxml.model.SettingsItemData
+import com.example.week2amantasksxml.models.Category
+import com.example.week2amantasksxml.models.SettingsItemData
 import com.example.week2amantasksxml.theme.poppins
 import com.example.week2amantasksxml.theme.primaryText
 
