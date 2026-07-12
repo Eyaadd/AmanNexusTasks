@@ -17,13 +17,28 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.week2amantasksxml.viewmodel.CounterScreenViewModel
 
 @Composable
-fun CounterScreen(modifier: Modifier = Modifier, viewModel: CounterScreenViewModel = viewModel()) {
-
+fun CounterScreen(
+    viewModel: CounterScreenViewModel = viewModel(),
+    modifier: Modifier = Modifier
+) {
     val counter by viewModel.counter.collectAsStateWithLifecycle()
-    Column( modifier = modifier
+    CounterScreenContent(
+        modifier = modifier,
+        value = counter
+    ){
+        viewModel.updateCounter()
+    }
+}
+
+
+@Composable
+fun CounterScreenContent(modifier: Modifier, value: Int, onClick: () -> Unit) {
+
+    Column(
+        modifier = modifier
             .fillMaxSize()
             .background(
-                when (counter % 4) {
+                when (value % 4) {
                     0 -> Color.Red
                     1 -> Color.Green
                     2 -> Color.Blue
@@ -35,9 +50,9 @@ fun CounterScreen(modifier: Modifier = Modifier, viewModel: CounterScreenViewMod
 
     ) {
         Text(
-            "$counter"
+            "$value"
         )
-        Button(onClick = { viewModel.updateCounter() }) {
+        Button(onClick = onClick) {
             Text("Increment And Change Background Color")
         }
 
