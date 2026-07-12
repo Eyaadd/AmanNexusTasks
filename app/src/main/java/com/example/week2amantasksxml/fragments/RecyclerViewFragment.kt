@@ -5,27 +5,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.week2amantasksxml.ToDoAdapter
-import com.example.week2amantasksxml.ToDoData
+import com.example.week2amantasksxml.UserAdapter
+import com.example.week2amantasksxml.models.ToDoData
+import com.example.week2amantasksxml.applySystemBarsPadding
 import com.example.week2amantasksxml.databinding.RecyclerViewScreenBinding
+import com.example.week2amantasksxml.models.User
+import kotlin.getValue
 
 class RecyclerViewFragment : Fragment() {
 
 
+    private val args: RecyclerViewFragmentArgs by navArgs()
     private var _binding: RecyclerViewScreenBinding? = null
+
+    private lateinit var adapter: UserAdapter
     private val binding get() = _binding!!
 
-    private lateinit var adapter: ToDoAdapter
-    private var toDoList = mutableListOf(
-        ToDoData(1, "Understand The Recycler View", true),
-        ToDoData(2, "Go To The Gym", false),
-        ToDoData(3, "Do The Laundry", false),
-        ToDoData(4, "Go To Work", true),
-        ToDoData(5, "Do The Dishes", false),
-    )
+    //    private lateinit var adapter: ToDoAdapter
+//    private var toDoList = mutableListOf(
+//        ToDoData(1, "Understand The Recycler View", true),
+//        ToDoData(2, "Go To The Gym", false),
+//        ToDoData(3, "Do The Laundry", false),
+//        ToDoData(4, "Go To Work", true),
+//        ToDoData(5, "Do The Dishes", false),
+//    )
     private var nextID = 6
 
 
@@ -46,8 +54,11 @@ class RecyclerViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ToDoAdapter()
-        adapter.submitList(toDoList)
+        view.applySystemBarsPadding()
+//        adapter = ToDoAdapter()
+//        adapter.submitList(toDoList)
+        adapter = UserAdapter()
+        adapter.submitList(args.users.toList())
         val itemTouchHelper =
             ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
                 0,
@@ -79,16 +90,15 @@ class RecyclerViewFragment : Fragment() {
             addbutton.setOnClickListener {
                 if (binding.edittext.text.isNotEmpty()) {
 
-                    val newItem = ToDoData(
-                        id = nextID++,
-                        title = binding.edittext.text.toString(),
-                        isChecked = false,
+                    val newUser = User(
+                        id = nextID,
+                        name = binding.edittext.text.toString().trim(),
+                        email = "Test${nextID++}@gmail.com"
                     )
 
                     val newList = adapter.currentList.toMutableList()
-                    newList.add(newItem)
+                    newList.add(newUser)
 
-                    toDoList = newList
 
                     adapter.submitList(newList)
 
@@ -104,7 +114,6 @@ class RecyclerViewFragment : Fragment() {
     private fun deleteItem(position: Int) {
         val newList = adapter.currentList.toMutableList()
         newList.removeAt(position)
-        toDoList = newList
         adapter.submitList(newList)
     }
 

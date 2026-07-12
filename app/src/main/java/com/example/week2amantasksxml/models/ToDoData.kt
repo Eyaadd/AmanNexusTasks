@@ -1,4 +1,4 @@
-package com.example.week2amantasksxml
+package com.example.week2amantasksxml.models
 
 data class ToDoData(
     val id : Int,
