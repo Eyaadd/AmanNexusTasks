@@ -11,30 +11,25 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.week2amantasksxml.screens.CounterScreen
 import com.example.week2amantasksxml.navigation.MyApp
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
         // For XML View
-
 //        setContentView(R.layout.activity_main)
+        enableEdgeToEdge()
         // Compose View
-
         setContent {
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                CounterScreen(
-                    modifier = Modifier.padding(innerPadding)
-                )
+                MyApp(modifier = Modifier.padding(innerPadding))
             }
 
         }
 
     }
 }
-
 
 
 
