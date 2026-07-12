@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.week2amantasksxml.screens.CounterScreen
-import com.example.week2amantasksxml.navigation.MyApp
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,9 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                CounterScreen(
-                    modifier = Modifier.padding(innerPadding)
-                )
+                CounterScreen(modifier = Modifier.padding(innerPadding))
             }
 
         }
