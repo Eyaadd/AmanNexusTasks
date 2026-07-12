@@ -1,4 +1,4 @@
-package com.example.week2amantasksxml.model
+package com.example.week2amantasksxml.models
 
 import androidx.annotation.DrawableRes
 

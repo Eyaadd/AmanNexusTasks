@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.week2amantasksxml.R
-import com.example.week2amantasksxml.model.SettingsItemData
+import com.example.week2amantasksxml.models.SettingsItemData
 import com.example.week2amantasksxml.theme.poppins
 import com.example.week2amantasksxml.theme.primaryText
 

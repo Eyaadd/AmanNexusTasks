@@ -8,12 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.compose.rememberNavController
-import com.example.week2amantasksxml.navigation.AppNavHost
+import com.example.week2amantasksxml.navigation.MyApp
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,12 +31,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-@Composable
-fun MyApp(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
-
-    AppNavHost(navController = navController, modifier = modifier)
-}
 
 
 fun View.applySystemBarsPadding() {
