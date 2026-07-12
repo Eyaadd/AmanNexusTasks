@@ -1,4 +1,4 @@
-package com.example.week2amantasksxml.state
+package com.example.week2amantasksxml.viewmodels
 
 data class LoginUiState(
     val email: String = "",

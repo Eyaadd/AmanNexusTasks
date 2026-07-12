@@ -1,4 +1,4 @@
-package com.example.week2amantasksxml.screens
+package com.example.week2amantasksxml.viewmodels.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,16 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,13 +35,19 @@ import com.example.week2amantasksxml.R
 import com.example.week2amantasksxml.components.CustomOutlinedTextField
 import com.example.week2amantasksxml.components.LoginAuthLayout
 import com.example.week2amantasksxml.components.UserAgreementLayout
-import com.example.week2amantasksxml.state.LoginUiState
+import com.example.week2amantasksxml.theme.darkGray
+import com.example.week2amantasksxml.theme.darkGreen
+import com.example.week2amantasksxml.viewmodels.LoginScreenViewModel
+import com.example.week2amantasksxml.viewmodels.LoginUiState
 import com.example.week2amantasksxml.theme.manropeSemiBold
-import com.example.week2amantasksxml.viewmodel.LoginScreenViewModel
 
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier, viewModel: LoginScreenViewModel = viewModel(), onSignInClicked: () -> Unit = {}) {
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    viewModel: LoginScreenViewModel = viewModel(),
+    onSignInClicked: () -> Unit = {}
+) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -69,8 +71,8 @@ fun LoginScreen(modifier: Modifier = Modifier, viewModel: LoginScreenViewModel =
 
 @Composable
 fun LoginScreenContent(
-    modifier: Modifier = Modifier,
     uiState: LoginUiState,
+    modifier: Modifier = Modifier,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSignInClicked: () -> Unit,
@@ -121,7 +123,7 @@ fun LoginScreenContent(
         Text(
             text = "Forgot Password?",
             fontFamily = manropeSemiBold,
-            color = Color(0xFF757575),
+            color = darkGray,
             fontSize = 14.sp,
             modifier = Modifier
                 .align(Alignment.End)
@@ -153,7 +155,7 @@ fun LoginScreenContent(
                 .fillMaxWidth()
                 .height(48.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF004643),
+                containerColor = darkGreen,
                 contentColor = Color.White,
                 disabledContainerColor = Color.Gray,
                 disabledContentColor = Color.White
@@ -179,7 +181,7 @@ fun LoginScreenContent(
             text = "other way to sign in",
             fontFamily = manropeSemiBold,
             fontSize = 12.sp,
-            color = Color(0xFF757575)
+            color = darkGray
         )
 
         Spacer(Modifier.size(16.dp))
@@ -194,12 +196,12 @@ fun LoginScreenContent(
 
                 withStyle(
                     SpanStyle(
-                        color = Color(0xFF004643), fontWeight = FontWeight.Bold
+                        color = darkGreen, fontWeight = FontWeight.Bold
                     )
                 ) {
                     append("Create Account")
                 }
-            }, fontFamily = manropeSemiBold, fontSize = 14.sp, color = Color(0xFF757575)
+            }, fontFamily = manropeSemiBold, fontSize = 14.sp, color = darkGray
         )
     }
 }

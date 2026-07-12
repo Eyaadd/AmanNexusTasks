@@ -1,8 +1,8 @@
-package com.example.week2amantasksxml.viewmodel
+package com.example.week2amantasksxml.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.week2amantasksxml.state.LoginUiState
+import com.example.week2amantasksxml.viewmodels.LoginUiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
