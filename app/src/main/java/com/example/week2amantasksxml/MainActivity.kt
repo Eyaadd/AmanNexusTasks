@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.week2amantasksxml.screens.CounterScreen
-import com.example.week2amantasksxml.screens.CounterScreenContent
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
