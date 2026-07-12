@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import com.example.week2amantasksxml.applySystemBarsPadding
-import com.example.week2amantasksxml.screens.LoginScreenContent
+import com.example.week2amantasksxml.screens.LoginScreen
 import com.example.week2amantasksxml.databinding.LoginScreenBinding
 
 class LoginFragment : Fragment() {
@@ -33,7 +33,7 @@ class LoginFragment : Fragment() {
                 ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
             )
             setContent {
-                LoginScreenContent()
+                LoginScreen()
             }
         }
 
