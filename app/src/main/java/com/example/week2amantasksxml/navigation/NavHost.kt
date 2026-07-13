@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.week2amantasksxml.screens.LoginScreenContent
+import com.example.week2amantasksxml.viewmodels.login.LoginScreen
 import com.example.week2amantasksxml.screens.SettingsScreen
 
 @Composable
@@ -19,7 +19,7 @@ fun AppNavHost(
         startDestination = Screen.Login.route
     ) {
         composable(Screen.Login.route) {
-            LoginScreenContent(
+            LoginScreen(
                 onSignInClicked = {
                     navController.navigate(Screen.Settings.route)
                 },
