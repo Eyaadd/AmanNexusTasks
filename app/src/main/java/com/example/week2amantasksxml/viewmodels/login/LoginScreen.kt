@@ -37,7 +37,7 @@ import com.example.week2amantasksxml.components.LoginAuthLayout
 import com.example.week2amantasksxml.components.UserAgreementLayout
 import com.example.week2amantasksxml.theme.darkGray
 import com.example.week2amantasksxml.theme.darkGreen
-import com.example.week2amantasksxml.viewmodels.LoginScreenViewModel
+import com.example.week2amantasksxml.viewmodels.LoginViewModel
 import com.example.week2amantasksxml.viewmodels.LoginUiState
 import com.example.week2amantasksxml.theme.manropeSemiBold
 
@@ -45,7 +45,7 @@ import com.example.week2amantasksxml.theme.manropeSemiBold
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginScreenViewModel = viewModel(),
+    viewModel: LoginViewModel = viewModel(),
     onSignInClicked: () -> Unit = {}
 ) {
 

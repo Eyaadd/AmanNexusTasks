@@ -45,4 +45,4 @@ fun MyApp(modifier: Modifier = Modifier) {
 
     AppNavHost(navController = navController, modifier = modifier)
 }
-}
+

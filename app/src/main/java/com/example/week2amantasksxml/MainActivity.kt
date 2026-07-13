@@ -11,7 +11,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.week2amantasksxml.screens.CounterScreen
+import com.example.week2amantasksxml.viewmodels.loader.ImageLoaderScreen
+import com.example.week2amantasksxml.viewmodels.loader.ImageLoaderScreenContent
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                CounterScreen(modifier = Modifier.padding(innerPadding))
+                ImageLoaderScreen(modifier = Modifier.padding(innerPadding))
             }
 
         }
