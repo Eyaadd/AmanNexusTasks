@@ -20,12 +20,7 @@ class LoginScreenViewModel : ViewModel() {
     fun login() {
         viewModelScope.launch {
 
-            _uiState.update {
-                it.copy(
-                    loading = true,
-                    errorMessage = null
-                )
-            }
+            updateLoadingState()
 
             delay(5000)
 
@@ -36,20 +31,9 @@ class LoginScreenViewModel : ViewModel() {
                         currentState.password.isNotBlank()
 
             if (isValid) {
-                _uiState.update {
-                    it.copy(
-                        loading = false,
-                        isLoggedIn = true,
-                        errorMessage = null
-                    )
-                }
+                updateSuccessState()
             } else {
-                _uiState.update {
-                    it.copy(
-                        loading = false,
-                        errorMessage = "Enter a valid email and password."
-                    )
-                }
+                updateErrorState()
             }
         }
     }
@@ -82,6 +66,34 @@ class LoginScreenViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 isLoggedIn = false
+            )
+        }
+    }
+
+    private fun updateSuccessState() {
+        _uiState.update {
+            it.copy(
+                loading = false,
+                isLoggedIn = true,
+                errorMessage = null
+            )
+        }
+    }
+
+    private fun updateErrorState() {
+        _uiState.update {
+            it.copy(
+                loading = false,
+                errorMessage = "Enter a valid email and password."
+            )
+        }
+    }
+
+    private fun updateLoadingState() {
+        _uiState.update {
+            it.copy(
+                loading = true,
+                errorMessage = null
             )
         }
     }
