@@ -3,11 +3,15 @@ package com.example.week2amantasksxml.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.week2amantasksxml.viewmodels.LoginUiState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.cancellation.CancellationException
 
 class LoginScreenViewModel : ViewModel() {
 
@@ -23,7 +27,6 @@ class LoginScreenViewModel : ViewModel() {
             updateLoadingState()
 
             delay(5000)
-
             val currentState = _uiState.value
 
             val isValid =
@@ -102,4 +105,27 @@ class LoginScreenViewModel : ViewModel() {
         return emailRegex.matches(email)
     }
 
+
+    fun computeHeavyOperation() {
+        viewModelScope.launch(Dispatchers.Default) {
+            try {
+                repeat(100_000_000) { iteration ->
+                    ensureActive()
+
+                    val result = iteration * iteration
+                }
+
+                println("Finished normally")
+
+            } catch (e: CancellationException) {
+                println("Cancelled!")
+                throw e
+            }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        println("ViewModel cleared")
+    }
 }

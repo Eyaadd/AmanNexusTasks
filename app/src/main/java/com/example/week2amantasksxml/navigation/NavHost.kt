@@ -16,12 +16,12 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = Screen.Settings.route
     ) {
         composable(Screen.Login.route) {
             LoginScreen(
                 onSignInClicked = {
-                    navController.navigate(Screen.Settings.route)
+                    navController.popBackStack()
                 },
                 modifier = modifier
             )
@@ -30,7 +30,7 @@ fun AppNavHost(
             SettingsScreen(
                 modifier = modifier,
                 onClick = {
-                    navController.popBackStack()
+                    navController.navigate(Screen.Login.route)
                 }
             )
         }
