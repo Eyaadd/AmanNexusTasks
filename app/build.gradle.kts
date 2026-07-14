@@ -94,4 +94,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
 
+    //LiveData
+    implementation("androidx.compose.runtime:runtime-livedata")
+
+
 }

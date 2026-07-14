@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.week2amantasksxml.navigation.MyApp
+import com.example.week2amantasksxml.screens.UsersScreen
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         // Compose View
         setContent {
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                MyApp(modifier = Modifier.padding(innerPadding))
+                UsersScreen(modifier = Modifier.padding(innerPadding))
             }
 
         }
@@ -33,17 +34,3 @@ class MainActivity : AppCompatActivity() {
 
 
 
-fun View.applySystemBarsPadding() {
-    ViewCompat.setOnApplyWindowInsetsListener(this) { view, insets ->
-        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-        view.setPadding(
-            systemBars.left,
-            systemBars.top,
-            systemBars.right,
-            systemBars.bottom
-        )
-
-        insets
-    }
-}
