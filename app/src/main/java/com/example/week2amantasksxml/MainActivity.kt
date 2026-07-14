@@ -17,11 +17,12 @@ import com.example.week2amantasksxml.screens.UsersScreen
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // For XML View
-//        setContentView(R.layout.activity_main)
         enableEdgeToEdge()
+        // For XML View
+
+//        setContentView(R.layout.activity_main)
         // Compose View
+
         setContent {
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                 UsersScreen(modifier = Modifier.padding(innerPadding))

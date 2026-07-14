@@ -38,9 +38,11 @@ fun AppNavHost(
 }
 
 
+
 @Composable
 fun MyApp(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     AppNavHost(navController = navController, modifier = modifier)
+}
 }
