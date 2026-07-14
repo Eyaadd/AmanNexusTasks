@@ -94,14 +94,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
 
-    // ViewModel
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
+    //LiveData
+    implementation("androidx.compose.runtime:runtime-livedata")
 
 
-    // Coroutines
-
-    implementation(libs.kotlinx.coroutines.android)
 }

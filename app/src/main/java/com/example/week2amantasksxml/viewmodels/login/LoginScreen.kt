@@ -52,6 +52,7 @@ fun LoginScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState.isLoggedIn) {
+        viewModel.computeHeavyOperation()
         if (uiState.isLoggedIn) {
             onSignInClicked()
             viewModel.resetLoginState()
