@@ -1,4 +1,4 @@
-package com.example.newsapp.ui.login.components
+package com.example.newsapp.ui.home.components
 
 import android.util.Log
 import androidx.compose.foundation.layout.size

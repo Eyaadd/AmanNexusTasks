@@ -1,4 +1,4 @@
-package com.example.newsapp.ui.login.components
+package com.example.newsapp.ui.home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

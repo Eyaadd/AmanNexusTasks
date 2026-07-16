@@ -1,4 +1,4 @@
-package com.example.newsapp.ui.login.viewmodels
+package com.example.newsapp.ui.login.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.example.newsapp.ui.login.components
+package com.example.newsapp.ui.home.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
