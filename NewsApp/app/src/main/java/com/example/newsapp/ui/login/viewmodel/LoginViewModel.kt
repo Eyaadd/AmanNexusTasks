@@ -2,82 +2,123 @@ package com.example.newsapp.ui.login.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.newsapp.data.repository.FakeLoginRepository
+import com.example.newsapp.ui.login.LoginContract
+import com.example.newsapp.ui.login.repository.LoginRepository
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    private val repository: LoginRepository = FakeLoginRepository()
 
-    private val _formState = MutableStateFlow(LoginFormState())
-    val formState: StateFlow<LoginFormState> = _formState.asStateFlow()
+) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
-    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+    private val _state = MutableStateFlow(LoginContract.State())
+    val state = _state.asStateFlow()
 
-    fun onEmailChanged(email: String) {
-        _formState.update {
+    private val _effect = MutableSharedFlow<LoginContract.Effect>()
+    val effect = _effect.asSharedFlow()
+
+    fun onIntent(intent: LoginContract.Intent) {
+        when (intent) {
+            is LoginContract.Intent.EmailChanged -> {
+                onEmailChanged(intent.email)
+            }
+
+            LoginContract.Intent.LoginClicked ->login()
+            is LoginContract.Intent.PasswordChanged -> {
+                onPasswordChanged(intent.password)
+            }
+
+            LoginContract.Intent.TogglePasswordVisibility -> togglePasswordVisibility()
+        }
+    }
+
+    private fun onEmailChanged(email: String) {
+        _state.update {
             it.copy(
-                email = email,
-                emailError = null
+                email = email, emailError = null
             )
         }
     }
 
-    fun onPasswordChanged(password: String) {
-        _formState.update {
+    private fun onPasswordChanged(password: String) {
+        _state.update {
             it.copy(
-                password = password,
-                passwordError = null
+                password = password, passwordError = null
             )
         }
     }
 
-    fun togglePasswordVisibility() {
-        _formState.update {
+    private fun togglePasswordVisibility() {
+        _state.update {
             it.copy(
                 isPasswordVisible = !it.isPasswordVisible
             )
         }
     }
 
-    fun login() {
+    private fun login() {
 
-        val form = _formState.value
+        val currentState = _state.value
 
-        val emailError = validateEmail(form.email)
+        val emailError = validateEmail(currentState.email)
+        val passwordError = validatePassword(currentState.password)
 
-        if (emailError != null) {
-            _formState.update {
-                it.copy(emailError = emailError)
+        if (emailError != null || passwordError != null) {
+            _state.update {
+                it.copy(
+                    emailError = emailError,
+                    passwordError = passwordError
+                )
             }
             return
         }
 
         viewModelScope.launch {
 
-            _uiState.value = LoginUiState.Loading
+            _state.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
 
-            delay(2000)
+            val isLoginSuccessful = repository.login(
+                email = currentState.email,
+                password = currentState.password
+            )
 
-            if (
-                form.email == "admin@test.com" &&
-                form.password == "123456"
-            ) {
-                _uiState.value = LoginUiState.Success
+            if (isLoginSuccessful) {
+                _state.update {
+                    it.copy(
+                        isLoading = false
+                    )
+                }
+                _effect.emit(
+                    LoginContract.Effect.NavigateToHome
+                )
             } else {
-                _uiState.value = LoginUiState.Error(
-                    "Invalid email or password"
+                _state.update {
+                    it.copy(
+                        isLoading = false
+                    )
+                }
+                _effect.emit(
+                    LoginContract.Effect.ShowError(
+                        "Invalid email or password"
+
+                    )
                 )
             }
         }
     }
 
-    fun resetUiState() {
-        _uiState.value = LoginUiState.Idle
-    }
+
 
     private fun validateEmail(email: String): String? {
 
@@ -90,6 +131,13 @@ class LoginViewModel : ViewModel() {
             !emailRegex.matches(email) -> "Invalid email address"
             else -> null
         }
+    }
+
+
+    private fun validatePassword(password: String): String? {
+
+        if (password.isBlank()) return "Password is required"
+        return null
     }
 
 }

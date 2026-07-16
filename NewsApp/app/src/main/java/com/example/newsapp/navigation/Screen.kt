@@ -8,4 +8,6 @@ sealed class Screen(
     data object Login : Screen("login")
 
     data object Home : Screen("home")
+    data object Search : Screen("search")
+
 }

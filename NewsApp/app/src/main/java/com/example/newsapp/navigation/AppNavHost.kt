@@ -44,8 +44,10 @@ fun AppNavHost(
 
         composable(Screen.Home.route) {
 
-            HomeScreen()
-
+            HomeScreen(
+                onNavigateToSearch = {
+                }
+            )
         }
 
     }
