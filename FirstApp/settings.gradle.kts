@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Week2AmanTasksXML"
+rootProject.name = "AmanNexusTasks"
 include(":app")
