@@ -1,4 +1,4 @@
-package com.example.newsapp.ui.home.repository
+package com.example.newsapp.repository
 
 import com.example.newsapp.ui.home.models.Post
 

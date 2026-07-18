@@ -18,3 +18,5 @@ val activeButtonColor = Color(0xFF121314)
 val authLoginButtonBorderColor = Color(0xFFEDEDED)
 
 val authLoginButtonContentColor = Color(0xFF1A1A1A)
+
+val textFieldBackgroundColor = Color(0xFFF4F8FC)

@@ -83,11 +83,11 @@ fun HomeScreenContent(
             ) {
                 ButtonIcon(
                     icon = R.drawable.ic_drawer
-                )
+                ){}
 
                 ButtonIcon(
                     icon = R.drawable.ic_bell
-                )
+                ){}
             }
         },
         bottomBar = {
