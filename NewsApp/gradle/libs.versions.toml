@@ -66,6 +66,8 @@ androidx-compose-material3 = { group = "androidx.compose.material3", name = "mat
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
+
+
 # Unit Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
@@ -77,3 +79,4 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}

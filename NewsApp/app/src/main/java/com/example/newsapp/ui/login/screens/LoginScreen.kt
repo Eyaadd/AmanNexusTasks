@@ -1,6 +1,7 @@
 package com.example.newsapp.ui.login.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -34,12 +36,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.newsapp.ui.login.components.CustomOutlinedTextField
-import com.example.newsapp.ui.login.components.SocialLoginButton
-import com.example.newsapp.ui.login.viewmodels.LoginUiState
-import com.example.newsapp.ui.login.viewmodels.LoginViewModel
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import com.example.newsapp.R
 import com.example.newsapp.theme.activeButtonColor
 import com.example.newsapp.theme.darkGray
@@ -47,6 +43,12 @@ import com.example.newsapp.theme.disabledButtonColor
 import com.example.newsapp.theme.roboto
 import com.example.newsapp.theme.sourceSans
 import com.example.newsapp.ui.login.components.BottomAuthText
+import com.example.newsapp.ui.login.components.CustomOutlinedTextField
+import com.example.newsapp.ui.login.components.SocialLoginButton
+import com.example.newsapp.ui.login.viewmodel.LoginFormState
+import com.example.newsapp.ui.login.viewmodel.LoginUiState
+import com.example.newsapp.ui.login.viewmodel.LoginViewModel
+
 
 @Composable
 fun LoginScreen(
@@ -58,18 +60,15 @@ fun LoginScreen(
     onGoogleClick: () -> Unit = {},
     onFacebookClick: () -> Unit = {}
 ) {
-
-
     val formState by viewModel.formState.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val snackbarHostState = remember {
         SnackbarHostState()
     }
+
     LaunchedEffect(uiState) {
-
         when (val state = uiState) {
-
             LoginUiState.Success -> {
                 onLoginSuccess()
                 viewModel.resetUiState()
@@ -82,19 +81,56 @@ fun LoginScreen(
 
             else -> Unit
         }
-
     }
-    Scaffold(
 
+    LoginScreenContent(
+        formState = formState,
+        uiState = uiState,
+        snackbarHostState = snackbarHostState,
+        onEmailChanged = viewModel::onEmailChanged,
+        onPasswordChanged = viewModel::onPasswordChanged,
+        onPasswordVisibilityClick = viewModel::togglePasswordVisibility,
+        onLoginClick = viewModel::login,
+        onForgotPassword = onForgotPassword,
+        onSignUp = onSignUp,
+        onGoogleClick = onGoogleClick,
+        onFacebookClick = onFacebookClick,
+        modifier = modifier
+    )
+}
+
+
+@Composable
+fun LoginScreenContent(
+    formState: LoginFormState,
+    uiState: LoginUiState,
+    snackbarHostState: SnackbarHostState,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onPasswordVisibilityClick: () -> Unit,
+    onLoginClick: () -> Unit,
+    onForgotPassword: () -> Unit,
+    onSignUp: () -> Unit,
+    onGoogleClick: () -> Unit,
+    onFacebookClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val isLoading = uiState is LoginUiState.Loading
+
+    Scaffold(
+        modifier = modifier,
         snackbarHost = {
-            SnackbarHost(snackbarHostState)
+            SnackbarHost(
+                hostState = snackbarHostState
+            )
         }
     ) { innerPadding ->
+
         Column(
-            modifier = modifier
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(innerPadding)
                 .background(Color.White)
-                .fillMaxSize()
                 .padding(horizontal = 18.dp),
             verticalArrangement = Arrangement.Top
         ) {
@@ -118,7 +154,7 @@ fun LoginScreen(
 
             CustomOutlinedTextField(
                 value = formState.email,
-                onValueChange = viewModel::onEmailChanged,
+                onValueChange = onEmailChanged,
                 placeHolder = "Email",
                 leadingIcon = R.drawable.ic_sms,
                 isError = formState.emailError != null,
@@ -129,9 +165,10 @@ fun LoginScreen(
             )
 
             Spacer(modifier = Modifier.height(16.dp))
+
             CustomOutlinedTextField(
                 value = formState.password,
-                onValueChange = viewModel::onPasswordChanged,
+                onValueChange = onPasswordChanged,
                 placeHolder = "Password",
                 leadingIcon = R.drawable.ic_lock,
                 trailingIcon = if (formState.isPasswordVisible) {
@@ -139,16 +176,16 @@ fun LoginScreen(
                 } else {
                     R.drawable.ic_eye
                 },
-                onTrailingIconClick = viewModel::togglePasswordVisibility,
-                visualTransformation =
-                    if (formState.isPasswordVisible) {
-                        VisualTransformation.None
-                    } else {
-                        PasswordVisualTransformation()
-                    }
+                onTrailingIconClick = onPasswordVisibilityClick,
+                visualTransformation = if (formState.isPasswordVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                }
             )
 
             Spacer(modifier = Modifier.height(8.dp))
+
             Text(
                 modifier = Modifier
                     .align(Alignment.End)
@@ -164,8 +201,8 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(54.dp),
-                enabled = uiState !is LoginUiState.Loading,
-                onClick = viewModel::login,
+                enabled = !isLoading,
+                onClick = onLoginClick,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = activeButtonColor,
                     disabledContainerColor = disabledButtonColor,
@@ -173,32 +210,27 @@ fun LoginScreen(
                 ),
                 shape = RoundedCornerShape(10.dp)
             ) {
-
-                if (uiState is LoginUiState.Loading) {
-
+                if (isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(22.dp),
                         color = Color.White,
                         strokeWidth = 2.dp
                     )
-
                 } else {
-
                     Text(
                         text = "Sign In",
                         fontFamily = sourceSans,
                         fontWeight = FontWeight.SemiBold
                     )
-
                 }
             }
 
             Spacer(modifier = Modifier.height(36.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 HorizontalDivider(
                     modifier = Modifier.weight(1f)
                 )
@@ -213,16 +245,18 @@ fun LoginScreen(
                 HorizontalDivider(
                     modifier = Modifier.weight(1f)
                 )
-
             }
 
             Spacer(modifier = Modifier.height(36.dp))
+
             SocialLoginButton(
                 text = "Continue with Google",
                 icon = R.drawable.ic_google,
                 onClick = onGoogleClick
             )
+
             Spacer(modifier = Modifier.height(16.dp))
+
             SocialLoginButton(
                 text = "Continue with Facebook",
                 icon = R.drawable.ic_facebook,
@@ -234,14 +268,28 @@ fun LoginScreen(
             BottomAuthText(
                 onSignUpClick = onSignUp
             )
+
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 private fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreenContent(
+        formState = LoginFormState(),
+        uiState = LoginUiState.Idle,
+        snackbarHostState = remember {
+            SnackbarHostState()
+        },
+        onEmailChanged = {},
+        onPasswordChanged = {},
+        onPasswordVisibilityClick = {},
+        onLoginClick = {},
+        onForgotPassword = {},
+        onSignUp = {},
+        onGoogleClick = {},
+        onFacebookClick = {}
+    )
 }

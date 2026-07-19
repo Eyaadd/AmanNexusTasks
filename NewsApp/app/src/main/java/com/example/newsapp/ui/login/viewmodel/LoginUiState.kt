@@ -1,4 +1,4 @@
-package com.example.newsapp.ui.login.viewmodels
+package com.example.newsapp.ui.login.viewmodel
 
 sealed interface LoginUiState {
     data object Idle : LoginUiState

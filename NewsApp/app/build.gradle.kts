@@ -86,6 +86,9 @@ dependencies {
     //Navigation
     implementation(libs.androidx.navigation.compose)
 
+    // Shimmer
+    implementation("com.valentinilk.shimmer:compose-shimmer:1.3.1")
+
 
     //LiveData
     implementation("androidx.compose.runtime:runtime-livedata")
