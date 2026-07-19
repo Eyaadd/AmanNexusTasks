@@ -4,14 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsapp.ui.home.models.Post
 import com.example.newsapp.ui.home.repository.FakePostsRepository
+import com.example.newsapp.ui.home.repository.PostsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class PostsViewModel(
+    private val repository: PostsRepository = FakePostsRepository()
 ) : ViewModel() {
 
-    private  val repository = FakePostsRepository()
     private val _uiState = MutableStateFlow<PostsUiState>(PostsUiState.Loading)
 
     val uiState = _uiState.asStateFlow()

@@ -1,11 +1,15 @@
 package com.example.newsapp.navigation
 
 
-sealed class Screen(
-    val route: String
-) {
+import kotlinx.serialization.Serializable
 
-    data object Login : Screen("login")
+sealed interface Screen {
 
-    data object Home : Screen("home")
+    @Serializable
+    data object Login : Screen
+
+    @Serializable
+    data object Home : Screen
+
+
 }
