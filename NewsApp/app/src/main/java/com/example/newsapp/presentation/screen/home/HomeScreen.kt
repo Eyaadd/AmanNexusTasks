@@ -225,7 +225,7 @@ fun HomeScreenContent(
 private fun HomeScreenLoadingPreview() {
     HomeScreenContent(
         state = HomeContract.HomeState(
-            isLoading = true
+            isLoading = false
         ),
         onIntent = {}
     )
