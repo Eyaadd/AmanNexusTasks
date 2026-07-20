@@ -1,5 +1,7 @@
 package com.example.newsapp.presentation.screen.login
 
+import androidx.annotation.StringRes
+
 
 object LoginContract {
 
@@ -32,7 +34,7 @@ object LoginContract {
         data object NavigateToHome : Effect
 
         data class ShowError(
-            val message: String
+            @StringRes val messageRes: Int
         ) : Effect
     }
 }

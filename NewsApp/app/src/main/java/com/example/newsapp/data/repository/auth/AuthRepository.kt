@@ -1,6 +1,6 @@
 package com.example.newsapp.data.repository.auth
 
-interface LoginRepository {
+interface AuthRepository {
 
     suspend fun login(
         email: String,

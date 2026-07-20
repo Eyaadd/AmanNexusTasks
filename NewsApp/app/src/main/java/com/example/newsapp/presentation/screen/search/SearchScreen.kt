@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.newsapp.R
-import com.example.newsapp.data.source.remote.models.Post
+import com.example.newsapp.data.source.remote.models.PostDTO
 import com.example.newsapp.presentation.screen.home.components.ButtonIcon
 import com.example.newsapp.presentation.screen.search.components.NewsSearchBar
-import com.example.newsapp.presentation.screen.search.SearchViewModel
+import com.example.newsapp.presentation.uimodel.PostModel
 import com.example.week2amantasksxml.ui.login.components.NewsFeedCard
 
 @Composable
@@ -88,7 +88,7 @@ private fun SearchScreenContent(
 
 
             else -> {
-                SearchResults(posts = uiState.posts)
+                SearchResults(postDTOS = uiState.postModel)
             }
         }
     }
@@ -120,14 +120,14 @@ private fun SearchHeader(
 
 @Composable
 private fun SearchResults(
-    posts: List<Post>
+    postDTOS: List<PostModel>
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(
-            items = posts,
+            items = postDTOS,
         ) { post ->
             NewsFeedCard(
                 image = post.image,
@@ -186,7 +186,7 @@ private fun EmptySearchContent(
 private fun SearchScreenPreview() {
     SearchScreenContent(
         uiState = SearchContract.SearchState(
-            posts = emptyList(),
+            postModel = emptyList(),
             isLoaded = true
         ),
         searchQuery = "",

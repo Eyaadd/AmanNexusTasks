@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.newsapp.R
+import com.example.newsapp.data.repository.news.FakePostsRepository
 import com.example.newsapp.presentation.theme.activeButtonColor
 import com.example.newsapp.presentation.theme.darkGray
 import com.example.newsapp.presentation.theme.roboto
@@ -37,11 +38,15 @@ import com.example.week2amantasksxml.ui.login.components.NewsFeedCard
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: PostsViewModel = viewModel(),
+    viewModel: HomeViewModel = viewModel(),
     onNavigateToSearch: () -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-
+    val viewModel: HomeViewModel = viewModel(
+        factory = HomeViewModelFactory(
+            repository = FakePostsRepository()
+        )
+    )
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -173,7 +178,7 @@ fun HomeScreenContent(
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
                             items(
-                                items = state.posts,
+                                items = state.postDTOS,
                                 key = { post -> post.title }
                             ) { post ->
                                 NewsCard(
@@ -200,7 +205,7 @@ fun HomeScreenContent(
                     }
 
                     items(
-                        items = state.posts,
+                        items = state.postDTOS,
                         key = { post -> post.title }
                     ) { post ->
                         NewsFeedCard(

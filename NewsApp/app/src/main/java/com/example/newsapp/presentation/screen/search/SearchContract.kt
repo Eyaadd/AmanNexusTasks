@@ -1,11 +1,11 @@
 package com.example.newsapp.presentation.screen.search
 
-import com.example.newsapp.data.source.remote.models.Post
+import com.example.newsapp.presentation.uimodel.PostModel
 
 object SearchContract {
     data class SearchState(
         val query: String = "",
-        val posts: List<Post> = emptyList(),
+        val postModel: List<PostModel> = emptyList(),
         val isLoading: Boolean = false,
         val isLoaded: Boolean = false,
         val isError: Boolean = false

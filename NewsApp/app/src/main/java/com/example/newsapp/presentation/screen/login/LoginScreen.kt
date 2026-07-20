@@ -25,9 +25,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -45,6 +48,7 @@ import com.example.newsapp.presentation.theme.darkGray
 import com.example.newsapp.presentation.theme.disabledButtonColor
 import com.example.newsapp.presentation.theme.roboto
 import com.example.newsapp.presentation.theme.sourceSans
+import kotlinx.coroutines.flow.Flow
 
 
 @Composable
@@ -58,21 +62,17 @@ fun LoginScreen(
     onFacebookClick: () -> Unit = {}
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
 
     val snackbarHostState = remember {
         SnackbarHostState()
     }
-
-    LaunchedEffect(Unit) {
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                LoginContract.Effect.NavigateToHome -> onLoginSuccess()
-
-                is LoginContract.Effect.ShowError -> snackbarHostState.showSnackbar(message = effect.message)
-
-            }
-        }
-    }
+    LoginEffectHandler(
+        effectFlow = viewModel.effect,
+        snackbarHostState = snackbarHostState,
+        onLoginSuccess = onLoginSuccess
+    )
     LoginScreenContent(
         state = state,
         snackbarHostState = snackbarHostState,
@@ -267,6 +267,32 @@ fun LoginScreenContent(
             )
 
             Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
+
+@Composable
+private fun LoginEffectHandler(
+    effectFlow: Flow<LoginContract.Effect>,
+    snackbarHostState: SnackbarHostState,
+    onLoginSuccess: () -> Unit
+) {
+    val context = LocalContext.current
+    val currentOnLoginSuccess by rememberUpdatedState(onLoginSuccess)
+
+    LaunchedEffect(effectFlow, snackbarHostState) {
+        effectFlow.collect { effect ->
+            when (effect) {
+                LoginContract.Effect.NavigateToHome -> {
+                    currentOnLoginSuccess()
+                }
+
+                is LoginContract.Effect.ShowError -> {
+                    snackbarHostState.showSnackbar(
+                        message = context.getString(effect.messageRes)
+                    )
+                }
+            }
         }
     }
 }

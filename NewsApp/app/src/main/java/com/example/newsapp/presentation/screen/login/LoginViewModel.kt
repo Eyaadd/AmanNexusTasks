@@ -2,8 +2,9 @@ package com.example.newsapp.presentation.screen.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.newsapp.data.repository.auth.FakeLoginRepository
-import com.example.newsapp.data.repository.auth.LoginRepository
+import com.example.newsapp.R
+import com.example.newsapp.data.repository.auth.FakeAuthRepository
+import com.example.newsapp.data.repository.auth.AuthRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val repository: LoginRepository = FakeLoginRepository()
+    private val repository: AuthRepository = FakeAuthRepository()
 
 ) : ViewModel() {
 
@@ -28,7 +29,7 @@ class LoginViewModel(
                 onEmailChanged(intent.email)
             }
 
-            LoginContract.Intent.LoginClicked ->login()
+            LoginContract.Intent.LoginClicked -> login()
             is LoginContract.Intent.PasswordChanged -> {
                 onPasswordChanged(intent.password)
             }
@@ -65,8 +66,53 @@ class LoginViewModel(
 
         val currentState = _state.value
 
-        val emailError = validateEmail(currentState.email)
-        val passwordError = validatePassword(currentState.password)
+        emailPasswordErrorState(email = currentState.email, password = currentState.password)
+
+        viewModelScope.launch {
+
+            updateLoadingState()
+
+            val isLoginSuccessful = repository.login(
+                email = currentState.email,
+                password = currentState.password
+            )
+
+            if (isLoginSuccessful) {
+                onLoadingFinished()
+                _effect.emit(
+                    LoginContract.Effect.NavigateToHome
+                )
+            } else {
+                onLoadingFinished()
+                _effect.emit(
+                    LoginContract.Effect.ShowError(
+                        R.string.error_message
+
+                    )
+                )
+            }
+        }
+    }
+
+    private fun updateLoadingState() {
+        _state.update {
+            it.copy(
+                isLoading = true
+            )
+        }
+    }
+
+    private fun onLoadingFinished() {
+        _state.update {
+            it.copy(
+                isLoading = false
+            )
+        }
+    }
+
+    private fun emailPasswordErrorState(email: String, password: String) {
+        val emailError = validateEmail(email)
+        val passwordError = validatePassword(password)
 
         if (emailError != null || passwordError != null) {
             _state.update {
@@ -77,46 +123,7 @@ class LoginViewModel(
             }
             return
         }
-
-        viewModelScope.launch {
-
-            _state.update {
-                it.copy(
-                    isLoading = true
-                )
-            }
-
-            val isLoginSuccessful = repository.login(
-                email = currentState.email,
-                password = currentState.password
-            )
-
-            if (isLoginSuccessful) {
-                _state.update {
-                    it.copy(
-                        isLoading = false
-                    )
-                }
-                _effect.emit(
-                    LoginContract.Effect.NavigateToHome
-                )
-            } else {
-                _state.update {
-                    it.copy(
-                        isLoading = false
-                    )
-                }
-                _effect.emit(
-                    LoginContract.Effect.ShowError(
-                        "Invalid email or password"
-
-                    )
-                )
-            }
-        }
     }
-
-
 
     private fun validateEmail(email: String): String? {
 

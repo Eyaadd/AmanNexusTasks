@@ -1,10 +1,10 @@
 package com.example.newsapp.presentation.screen.home
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.newsapp.data.repository.news.FakePostsRepository
-import com.example.newsapp.data.source.remote.models.Post
+import com.example.newsapp.data.repository.news.PostsRepository
+import com.example.newsapp.data.source.remote.models.PostDTO
+import com.example.newsapp.presentation.navigation.Screen
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,9 +12,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class PostsViewModel(
-    private val repository: FakePostsRepository = FakePostsRepository(),
-    private val savedStateHandle: SavedStateHandle = SavedStateHandle()
+class HomeViewModel(
+    private val repository: PostsRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -30,10 +29,6 @@ class PostsViewModel(
 
     fun onIntent(intent: HomeContract.HomeIntent) {
         when (intent) {
-            HomeContract.HomeIntent.LoadPosts -> {
-                loadPosts()
-            }
-
 
             is HomeContract.HomeIntent.BottomNavItemClicked -> {
                 onBottomNavItemClicked(intent.route)
@@ -62,10 +57,10 @@ class PostsViewModel(
         }
     }
 
-    private fun updateSuccessState(posts: List<Post>) {
+    private fun updateSuccessState(postDTOS: List<PostDTO>) {
         _uiState.update {
             it.copy(
-                isLoading = false, posts = posts, errorMessage = null
+                isLoading = false, postDTOS = postDTOS, errorMessage = null
             )
         }
     }
@@ -78,21 +73,29 @@ class PostsViewModel(
         }
     }
 
-    private fun onBottomNavItemClicked(route: String) {
-        when (route) {
-            "news" -> {
-                viewModelScope.launch {
-                    _effect.emit(
-                        HomeContract.HomeEffect.NavigateToSearch
-                    )
-                }
+    private fun onBottomNavItemClicked(destination: Screen) {
+        when (destination) {
+            Screen.Search -> {
+                sendEffect(
+                    HomeContract.HomeEffect.NavigateToSearch
+                )
             }
 
             else -> {
-                _uiState.update {
-                    it.copy(selectedRoute = route)
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        selectedRoute = destination
+                    )
                 }
             }
         }
     }
+    private fun sendEffect(
+        effect: HomeContract.HomeEffect
+    ) {
+        viewModelScope.launch {
+            _effect.emit(effect)
+        }
+    }
 }
+

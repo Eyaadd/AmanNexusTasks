@@ -13,29 +13,31 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.R
+import com.example.newsapp.presentation.navigation.Screen
+import com.example.week2amantasksxml.models.BottomNavItem
 
 
 val bottomNavItems = listOf(
-    _root_ide_package_.com.example.week2amantasksxml.models.BottomNavItem(
-        route = "home",
+    BottomNavItem(
+        route = Screen.Home,
         title = "Home",
         selectedIcon = R.drawable.ic_home_active,
         unselectedIcon = R.drawable.ic_home_inactive
     ),
-    _root_ide_package_.com.example.week2amantasksxml.models.BottomNavItem(
-        route = "news",
+    BottomNavItem(
+        route = Screen.Search,
         title = "News",
         selectedIcon = R.drawable.ic_news_active,
         unselectedIcon = R.drawable.ic_news_inactive
     ),
-    _root_ide_package_.com.example.week2amantasksxml.models.BottomNavItem(
-        route = "favorites",
+    BottomNavItem(
+        route = Screen.Home,
         title = "Favorites",
         selectedIcon = R.drawable.ic_saved_active,
         unselectedIcon = R.drawable.ic_saved_inactive
     ),
-    _root_ide_package_.com.example.week2amantasksxml.models.BottomNavItem(
-        route = "profile",
+    BottomNavItem(
+        route = Screen.Home,
         title = "Profile",
         selectedIcon = R.drawable.ic_profile_active,
         unselectedIcon = R.drawable.ic_profile_inactive
@@ -44,14 +46,13 @@ val bottomNavItems = listOf(
 
 @Composable
 fun BottomBar(
-    currentRoute: String,
-    onItemClick: (String) -> Unit
+    currentRoute: Screen,
+    onItemClick: (Screen) -> Unit
 ) {
     NavigationBar {
         bottomNavItems.forEach { item ->
 
             val selected = currentRoute == item.route
-            Log.d("BottomBar", "${item.route} selected = $selected")
 
             NavigationBarItem(
                 selected = selected,
@@ -83,6 +84,6 @@ fun BottomBar(
 @Composable
 fun BottomBarPreview() {
     BottomBar(
-        currentRoute = "Home"
+        currentRoute = Screen.Home
     ) { }
 }

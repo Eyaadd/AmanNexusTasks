@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsapp.data.repository.news.FakePostsRepository
 import com.example.newsapp.data.repository.news.PostsRepository
-import com.example.newsapp.data.source.remote.models.Post
+import com.example.newsapp.data.source.remote.models.PostDTO
+import com.example.newsapp.presentation.uimodel.PostModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,7 @@ class SearchViewModel(
     private val _effect = MutableSharedFlow<SearchContract.SearchEffect>()
     val effect = _effect.asSharedFlow()
 
-    private var allPosts: List<Post> = emptyList()
+    private var allPosts: List<PostModel> = emptyList()
 
     init {
         loadPosts()
@@ -61,7 +62,16 @@ class SearchViewModel(
             updateLoadingState()
 
             try {
-                val posts = repository.getPosts()
+                val posts = repository.getPosts().map { it
+                    PostModel(
+                        image = it.image,
+                        category = it.category,
+                        title = it.title,
+                        authorIcon = it.authorIcon,
+                        author = it.author,
+                        publishDate = it.publishDate
+                    )
+                }
 
                 allPosts = posts
                 updateSuccessState()
@@ -94,7 +104,7 @@ class SearchViewModel(
         }
 
         _uiState.update {
-            it.copy(posts = filteredPosts)
+            it.copy(postModel = filteredPosts)
         }
     }
 
@@ -112,7 +122,7 @@ class SearchViewModel(
         _uiState.update {
             it.copy(
                 isLoading = false,
-                posts = emptyList(),
+                postModel = emptyList(),
                 isLoaded = true,
                 isError = false
             )

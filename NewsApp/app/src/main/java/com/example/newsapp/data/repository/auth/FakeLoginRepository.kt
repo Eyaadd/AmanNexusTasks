@@ -2,7 +2,7 @@ package com.example.newsapp.data.repository.auth
 
 import kotlinx.coroutines.delay
 
-class FakeLoginRepository : LoginRepository {
+class FakeAuthRepository : AuthRepository {
 
     override suspend fun login(
         email: String,
