@@ -16,7 +16,8 @@ class MainActivity : ComponentActivity() {
 
             AppNavHost(
                 navController = navController
-            )        }
+            )
+        }
     }
 }
 
