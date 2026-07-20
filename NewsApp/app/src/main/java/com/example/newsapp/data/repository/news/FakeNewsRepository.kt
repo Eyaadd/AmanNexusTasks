@@ -1,10 +1,10 @@
 package com.example.newsapp.data.repository.news
 
 import com.example.newsapp.R
-import com.example.newsapp.data.source.remote.models.PostDTO
+import com.example.newsapp.data.source.remote.dtos.PostDTO
 import kotlinx.coroutines.delay
 
-class FakePostsRepository : PostsRepository {
+class FakeNewsRepository : NewsRepository {
 
     override suspend fun getPosts(): List<PostDTO> {
 

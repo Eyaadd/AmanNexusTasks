@@ -1,4 +1,4 @@
-package com.example.newsapp.data.source.remote.models
+package com.example.newsapp.data.source.remote.dtos
 
 data class PostDTO(
     val image: Int,
@@ -7,4 +7,5 @@ data class PostDTO(
     val authorIcon: Int,
     val author: String,
     val publishDate: String
+
 )

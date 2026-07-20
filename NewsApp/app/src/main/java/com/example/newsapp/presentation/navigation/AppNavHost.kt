@@ -1,11 +1,10 @@
-package com.example.newsapp.navigation
+package com.example.newsapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.newsapp.presentation.navigation.Screen
 import com.example.newsapp.presentation.screen.home.HomeScreen
 import com.example.newsapp.presentation.screen.login.LoginScreen
 import com.example.newsapp.presentation.screen.search.SearchScreen

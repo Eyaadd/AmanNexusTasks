@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.newsapp.R
-import com.example.newsapp.data.repository.news.FakePostsRepository
+import com.example.newsapp.data.repository.news.FakeNewsRepository
 import com.example.newsapp.presentation.theme.activeButtonColor
 import com.example.newsapp.presentation.theme.darkGray
 import com.example.newsapp.presentation.theme.roboto
@@ -44,7 +44,7 @@ fun HomeScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val viewModel: HomeViewModel = viewModel(
         factory = HomeViewModelFactory(
-            repository = FakePostsRepository()
+            repository = FakeNewsRepository()
         )
     )
     LaunchedEffect(Unit) {

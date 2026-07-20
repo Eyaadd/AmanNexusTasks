@@ -2,9 +2,9 @@ package com.example.newsapp.presentation.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.newsapp.data.repository.news.PostsRepository
-import com.example.newsapp.data.source.remote.models.PostDTO
+import com.example.newsapp.data.repository.news.NewsRepository
 import com.example.newsapp.presentation.navigation.Screen
+import com.example.newsapp.presentation.uimodel.PostModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val repository: PostsRepository,
+    private val repository: NewsRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -41,7 +41,16 @@ class HomeViewModel(
             updateLoadingState()
 
             try {
-                val posts = repository.getPosts()
+                val posts = repository.getPosts().map {
+                    PostModel(
+                        image = it.image,
+                        category = it.category,
+                        title = it.title,
+                        authorIcon = it.authorIcon,
+                        author = it.author,
+                        publishDate = it.publishDate
+                    )
+                }
                 updateSuccessState(posts)
             } catch (e: Exception) {
                 updateErrorState(e)
@@ -57,7 +66,7 @@ class HomeViewModel(
         }
     }
 
-    private fun updateSuccessState(postDTOS: List<PostDTO>) {
+    private fun updateSuccessState(postDTOS: List<PostModel>) {
         _uiState.update {
             it.copy(
                 isLoading = false, postDTOS = postDTOS, errorMessage = null
@@ -90,6 +99,7 @@ class HomeViewModel(
             }
         }
     }
+
     private fun sendEffect(
         effect: HomeContract.HomeEffect
     ) {

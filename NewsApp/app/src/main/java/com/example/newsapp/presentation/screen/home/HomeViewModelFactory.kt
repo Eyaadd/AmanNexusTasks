@@ -3,10 +3,10 @@ package com.example.newsapp.presentation.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.newsapp.data.repository.news.FakePostsRepository
+import com.example.newsapp.data.repository.news.FakeNewsRepository
 
 class HomeViewModelFactory(
-    private val repository: FakePostsRepository
+    private val repository: FakeNewsRepository
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

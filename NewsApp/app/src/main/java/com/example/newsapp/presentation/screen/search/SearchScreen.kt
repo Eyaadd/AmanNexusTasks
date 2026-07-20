@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.newsapp.R
-import com.example.newsapp.data.source.remote.models.PostDTO
 import com.example.newsapp.presentation.screen.home.components.ButtonIcon
 import com.example.newsapp.presentation.screen.search.components.NewsSearchBar
 import com.example.newsapp.presentation.uimodel.PostModel

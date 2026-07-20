@@ -40,6 +40,8 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+
     }
 }
 
@@ -96,8 +98,18 @@ dependencies {
     implementation(libs.androidx.compose.runtime.livedata)
 
 
-    //Serialization
+    implementation(libs.retrofit)
 
+    implementation(libs.converter.gson)
+
+    // implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
+    // implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+
+    // OkHttp — the actual HTTP client Retrofit is built on
+    implementation(libs.okhttp)
+
+    // Logging interceptor — lets you see raw requests/responses in Logcat
+    implementation(libs.logging.interceptor)
 
 
 }

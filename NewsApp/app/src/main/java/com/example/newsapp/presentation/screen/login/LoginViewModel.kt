@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val repository: AuthRepository = FakeAuthRepository()
+    private val repository: AuthRepository
 
 ) : ViewModel() {
 

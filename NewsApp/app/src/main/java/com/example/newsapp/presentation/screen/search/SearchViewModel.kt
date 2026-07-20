@@ -2,9 +2,8 @@ package com.example.newsapp.presentation.screen.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.newsapp.data.repository.news.FakePostsRepository
-import com.example.newsapp.data.repository.news.PostsRepository
-import com.example.newsapp.data.source.remote.models.PostDTO
+import com.example.newsapp.data.repository.news.FakeNewsRepository
+import com.example.newsapp.data.repository.news.NewsRepository
 import com.example.newsapp.presentation.uimodel.PostModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class)
 class SearchViewModel(
-    private val repository: PostsRepository = FakePostsRepository()
+    private val repository: NewsRepository = FakeNewsRepository()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchContract.SearchState())
@@ -62,7 +61,7 @@ class SearchViewModel(
             updateLoadingState()
 
             try {
-                val posts = repository.getPosts().map { it
+                val posts = repository.getPosts().map {
                     PostModel(
                         image = it.image,
                         category = it.category,

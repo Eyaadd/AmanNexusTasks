@@ -1,7 +1,7 @@
 package com.example.newsapp.data.repository.news
 
-import com.example.newsapp.data.source.remote.models.PostDTO
+import com.example.newsapp.data.source.remote.dtos.PostDTO
 
-interface PostsRepository {
+interface NewsRepository {
     suspend fun getPosts(): List<PostDTO>
 }
