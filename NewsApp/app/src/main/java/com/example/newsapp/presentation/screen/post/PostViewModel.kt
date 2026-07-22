@@ -3,7 +3,7 @@ package com.example.newsapp.presentation.screen.post
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsapp.data.repository.posts.PostsRepository
-import com.example.newsapp.data.source.remote.models.Post
+import com.example.newsapp.data.models.ArticlesModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -48,7 +48,7 @@ class PostViewModel(
         }
     }
 
-    private fun updateSuccessState(posts: List<Post>) {
+    private fun updateSuccessState(posts: List<ArticlesModel>) {
         _uiState.update {
             it.copy(
                 isLoading = false,

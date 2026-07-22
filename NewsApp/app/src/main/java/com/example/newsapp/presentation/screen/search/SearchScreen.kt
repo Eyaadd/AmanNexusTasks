@@ -27,7 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.newsapp.R
 import com.example.newsapp.presentation.screen.home.components.ButtonIcon
 import com.example.newsapp.presentation.screen.search.components.NewsSearchBar
-import com.example.newsapp.presentation.uimodel.PostModel
+import com.example.newsapp.data.models.PostModel
 import com.example.week2amantasksxml.ui.login.components.NewsFeedCard
 
 @Composable

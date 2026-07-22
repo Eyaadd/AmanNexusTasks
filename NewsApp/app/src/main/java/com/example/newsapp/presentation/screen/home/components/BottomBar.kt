@@ -1,6 +1,5 @@
 package com.example.newsapp.presentation.screen.home.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -14,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.R
 import com.example.newsapp.presentation.navigation.Screen
-import com.example.week2amantasksxml.models.BottomNavItem
+import com.example.newsapp.presentation.composable.BottomNavItem
 
 
 val bottomNavItems = listOf(

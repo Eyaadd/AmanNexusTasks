@@ -1,6 +1,7 @@
-package com.example.newsapp.presentation.uimodel
+package com.example.newsapp.data.source.remote.dtos
 
-data class PostModel(
+// ignore
+data class ArticlesDTO(
     val image: Int,
     val category: String,
     val title: String,

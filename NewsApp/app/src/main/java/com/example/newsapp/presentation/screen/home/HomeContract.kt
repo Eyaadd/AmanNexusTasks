@@ -1,19 +1,17 @@
 package com.example.newsapp.presentation.screen.home
 
 import com.example.newsapp.presentation.navigation.Screen
-import com.example.newsapp.presentation.uimodel.PostModel
+import com.example.newsapp.data.models.PostModel
 
 object HomeContract {
 
     data class HomeState(
-        val postDTOS: List<PostModel> = emptyList(),
+        val posts: List<PostModel> = emptyList(),
         val isLoading: Boolean = false,
         val errorMessage: String? = null,
-        val selectedRoute: Screen = Screen.Home
     )
 
     sealed interface HomeIntent {
-
 
 
         data class BottomNavItemClicked(

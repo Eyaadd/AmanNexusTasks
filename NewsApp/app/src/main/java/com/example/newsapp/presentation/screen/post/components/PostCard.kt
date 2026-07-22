@@ -15,11 +15,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.newsapp.data.source.remote.models.Post
+import com.example.newsapp.data.models.ArticlesModel
 
 @Composable
 fun PostCard(
-    post: Post,
+    post: ArticlesModel,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
@@ -68,7 +68,7 @@ fun PostCard(
 @Composable
 fun PostCardPreview() {
     PostCard(
-        post = Post(
+        post = ArticlesModel(
             id = 1,
             title = "World Cup",
             body = "Cristiano Ronaldo delivers another historic performance as Portugal secures a dramatic victory. Fans around the world celebrate what many are calling one of the greatest moments in football history.",

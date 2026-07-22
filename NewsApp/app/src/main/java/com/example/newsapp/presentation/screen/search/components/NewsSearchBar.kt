@@ -28,9 +28,9 @@ import com.example.newsapp.presentation.theme.textFieldBackgroundColor
 
 @Composable
 fun NewsSearchBar(
+    searchQuery: String,
     modifier: Modifier = Modifier,
     placeholder: String = "Search “News”",
-    searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
 
 ) {

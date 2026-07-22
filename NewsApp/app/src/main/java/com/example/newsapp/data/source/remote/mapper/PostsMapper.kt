@@ -1,9 +1,9 @@
 package com.example.newsapp.data.source.remote.mapper
 
 import com.example.newsapp.data.source.remote.dtos.PostsDTO
-import com.example.newsapp.data.source.remote.models.Post
+import com.example.newsapp.data.models.ArticlesModel
 
-fun PostsDTO.toDomain(): Post = Post(
+fun PostsDTO.toDomain(): ArticlesModel = ArticlesModel(
     id = id,
     title = title,
     body = body,

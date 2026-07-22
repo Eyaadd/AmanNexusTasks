@@ -1,4 +1,4 @@
-package com.example.week2amantasksxml.models
+package com.example.newsapp.presentation.composable
 
 import androidx.annotation.DrawableRes
 import com.example.newsapp.presentation.navigation.Screen

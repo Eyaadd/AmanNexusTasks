@@ -178,7 +178,7 @@ fun HomeScreenContent(
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
                             items(
-                                items = state.postDTOS,
+                                items = state.posts,
                                 key = { post -> post.title }
                             ) { post ->
                                 NewsCard(
@@ -205,7 +205,7 @@ fun HomeScreenContent(
                     }
 
                     items(
-                        items = state.postDTOS,
+                        items = state.posts,
                         key = { post -> post.title }
                     ) { post ->
                         NewsFeedCard(

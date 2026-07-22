@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsapp.data.repository.news.FakeNewsRepository
 import com.example.newsapp.data.repository.news.NewsRepository
-import com.example.newsapp.presentation.uimodel.PostModel
+import com.example.newsapp.data.models.PostModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

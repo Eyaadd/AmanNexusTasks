@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newsapp.data.repository.news.NewsRepository
 import com.example.newsapp.presentation.navigation.Screen
-import com.example.newsapp.presentation.uimodel.PostModel
+import com.example.newsapp.data.models.PostModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -69,7 +69,7 @@ class HomeViewModel(
     private fun updateSuccessState(postDTOS: List<PostModel>) {
         _uiState.update {
             it.copy(
-                isLoading = false, postDTOS = postDTOS, errorMessage = null
+                isLoading = false, posts = postDTOS, errorMessage = null
             )
         }
     }

@@ -7,8 +7,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object NetworkModule {
-
+object RetrofitProvider {
+    private val baseUrl = "https://dummyjson.com/"
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
         else HttpLoggingInterceptor.Level.NONE
@@ -21,10 +21,10 @@ object NetworkModule {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://dummyjson.com/")
+        .baseUrl(baseUrl)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val postApi: PostApi = retrofit.create(PostApi::class.java)
+    val postApi: NewsApi = retrofit.create(NewsApi::class.java)
 }

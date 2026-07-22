@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,22 +18,21 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.newsapp.data.repository.posts.PostsRepositoryImp
-import com.example.newsapp.data.source.remote.NetworkModule
-import com.example.newsapp.data.source.remote.models.Post
+import com.example.newsapp.data.source.remote.RetrofitProvider
+import com.example.newsapp.data.models.ArticlesModel
 import com.example.newsapp.presentation.screen.post.components.PostCard
 
 @Composable
 fun PostsScreen(
     modifier: Modifier = Modifier,
-    onPostClick: (Post) -> Unit = {},
+    onPostClick: (ArticlesModel) -> Unit = {},
     viewModel: PostViewModel = viewModel(
         factory = PostViewModelFactory(
-            repository = PostsRepositoryImp(api = NetworkModule.postApi)
+            repository = PostsRepositoryImp(api = RetrofitProvider.postApi)
         )
     )
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
 
 
     when {
@@ -64,9 +62,9 @@ fun PostsScreen(
 }
 @Composable
 fun PostsScreenContent(
-    posts: List<Post>,
+    posts: List<ArticlesModel>,
     modifier: Modifier = Modifier,
-    onPostClick: (Post) -> Unit = {}
+    onPostClick: (ArticlesModel) -> Unit = {}
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -92,7 +90,7 @@ fun PostsScreenContent(
 fun PostsScreenPreview() {
         PostsScreenContent(
             posts = listOf(
-                Post(
+                ArticlesModel(
                     id = 1,
                     title = "World Cup",
                     body = "Cristiano Ronaldo delivers another historic performance for Portugal.",
@@ -101,7 +99,7 @@ fun PostsScreenPreview() {
                     dislikeCount = 317,
                     views = 256_431
                 ),
-                Post(
+                ArticlesModel(
                     id = 2,
                     title = "Jetpack Compose",
                     body = "Jetpack Compose simplifies Android UI development using declarative programming.",

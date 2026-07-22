@@ -1,6 +1,6 @@
 package com.example.newsapp.presentation.screen.search
 
-import com.example.newsapp.presentation.uimodel.PostModel
+import com.example.newsapp.data.models.PostModel
 
 object SearchContract {
     data class SearchState(

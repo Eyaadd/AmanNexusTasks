@@ -1,6 +1,6 @@
-package com.example.newsapp.data.source.remote.models
+package com.example.newsapp.data.models
 
-data class Post(
+data class ArticlesModel(
     val id: Int,
     val title: String,
     val body: String,

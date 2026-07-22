@@ -1,7 +1,7 @@
 package com.example.newsapp.data.repository.posts
 
-import com.example.newsapp.data.source.remote.models.Post
+import com.example.newsapp.data.models.ArticlesModel
 
 interface PostsRepository {
-    suspend fun getPosts() : List<Post>
+    suspend fun getPosts() : List<ArticlesModel>
 }
