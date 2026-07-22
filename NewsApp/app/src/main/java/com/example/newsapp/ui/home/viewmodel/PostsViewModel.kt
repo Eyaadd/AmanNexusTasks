@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.newsapp.ui.home.HomeContract
 import com.example.newsapp.ui.home.models.Post
 import com.example.newsapp.ui.home.repository.FakePostsRepository
+
+import com.example.newsapp.ui.home.repository.PostsRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -13,12 +15,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PostsViewModel(
-    private val repository: FakePostsRepository = FakePostsRepository()
+
+    private val repository: PostsRepository = FakePostsRepository()
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(
-        HomeContract.HomeState()
-    )
+    private val _uiState = MutableStateFlow<HomeContract.HomeState>(HomeContract.HomeState())
+
     val uiState = _uiState.asStateFlow()
 
     private val _effect = MutableSharedFlow<HomeContract.HomeEffect>()
