@@ -14,10 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,41 +28,47 @@ import com.example.newsapp.theme.activeButtonColor
 import com.example.newsapp.theme.darkGray
 import com.example.newsapp.theme.roboto
 import com.example.newsapp.theme.sourceSans
+import com.example.newsapp.ui.home.HomeContract
 import com.example.newsapp.ui.home.components.BottomBar
 import com.example.newsapp.ui.home.components.ButtonIcon
 import com.example.newsapp.ui.home.components.HomeScreenShimmer
 import com.example.newsapp.ui.home.components.NewsCard
-import com.example.newsapp.ui.home.viewmodel.PostsUiState
 import com.example.newsapp.ui.home.viewmodel.PostsViewModel
 import com.example.week2amantasksxml.ui.login.components.NewsFeedCard
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: PostsViewModel = viewModel()
+    viewModel: PostsViewModel = viewModel(),
+    onNavigateToSearch: () -> Unit = {}
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    var currentRoute by remember {
-        mutableStateOf("home")
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                HomeContract.HomeEffect.NavigateToSearch -> {
+                    onNavigateToSearch()
+                }
+
+                is HomeContract.HomeEffect.ShowError -> {
+                }
+            }
+        }
     }
 
     HomeScreenContent(
-        modifier = modifier,
-        uiState = uiState,
-        currentRoute = currentRoute,
-        onBottomNavItemClick = { selectedRoute ->
-            currentRoute = selectedRoute
-        },
+        state = state,
+        onIntent = viewModel::onIntent,
+        modifier = modifier
     )
 }
 
 @Composable
 fun HomeScreenContent(
-    modifier: Modifier = Modifier,
-    uiState: PostsUiState,
-    currentRoute: String,
-    onBottomNavItemClick: (String) -> Unit,
+    state: HomeContract.HomeState,
+    onIntent: (HomeContract.HomeIntent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = modifier,
@@ -78,24 +82,28 @@ fun HomeScreenContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ButtonIcon(
-                    icon = R.drawable.ic_drawer,
+                    icon = R.drawable.ic_drawer
                 )
 
                 ButtonIcon(
-                    icon = R.drawable.ic_bell,
+                    icon = R.drawable.ic_bell
                 )
             }
         },
         bottomBar = {
             BottomBar(
-                currentRoute = currentRoute,
-                onItemClick = onBottomNavItemClick
+                currentRoute = state.selectedRoute,
+                onItemClick = { route ->
+                    onIntent(
+                        HomeContract.HomeIntent.BottomNavItemClicked(route)
+                    )
+                }
             )
         }
     ) { innerPadding ->
 
-        when (uiState) {
-            PostsUiState.Loading -> {
+        when {
+            state.isLoading -> {
                 HomeScreenShimmer(
                     modifier = Modifier
                         .fillMaxSize()
@@ -104,9 +112,9 @@ fun HomeScreenContent(
                 )
             }
 
-            is PostsUiState.Error -> {
+            state.errorMessage != null -> {
                 Text(
-                    text = uiState.message,
+                    text = state.errorMessage,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
@@ -115,7 +123,7 @@ fun HomeScreenContent(
                 )
             }
 
-            is PostsUiState.Success -> {
+            else -> {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -167,7 +175,7 @@ fun HomeScreenContent(
                             horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
                             items(
-                                items = uiState.posts,
+                                items = state.posts,
                                 key = { post -> post.title }
                             ) { post ->
                                 NewsCard(
@@ -195,7 +203,7 @@ fun HomeScreenContent(
                     }
 
                     items(
-                        items = uiState.posts,
+                        items = state.posts,
                         key = { post -> post.title }
                     ) { post ->
                         NewsFeedCard(
@@ -215,12 +223,13 @@ fun HomeScreenContent(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun HomeScreenLoadingPreview() {
     HomeScreenContent(
-        uiState = PostsUiState.Loading,
-        currentRoute = "home",
-        onBottomNavItemClick = {}
+        state = HomeContract.HomeState(
+            isLoading = true
+        ),
+        onIntent = {}
     )
 }

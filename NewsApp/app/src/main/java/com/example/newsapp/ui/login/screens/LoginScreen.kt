@@ -42,11 +42,10 @@ import com.example.newsapp.theme.darkGray
 import com.example.newsapp.theme.disabledButtonColor
 import com.example.newsapp.theme.roboto
 import com.example.newsapp.theme.sourceSans
+import com.example.newsapp.ui.login.LoginContract
 import com.example.newsapp.ui.login.components.BottomAuthText
 import com.example.newsapp.ui.login.components.CustomOutlinedTextField
 import com.example.newsapp.ui.login.components.SocialLoginButton
-import com.example.newsapp.ui.login.viewmodel.LoginFormState
-import com.example.newsapp.ui.login.viewmodel.LoginUiState
 import com.example.newsapp.ui.login.viewmodel.LoginViewModel
 
 
@@ -60,37 +59,26 @@ fun LoginScreen(
     onGoogleClick: () -> Unit = {},
     onFacebookClick: () -> Unit = {}
 ) {
-    val formState by viewModel.formState.collectAsStateWithLifecycle()
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     val snackbarHostState = remember {
         SnackbarHostState()
     }
 
-    LaunchedEffect(uiState) {
-        when (val state = uiState) {
-            LoginUiState.Success -> {
-                onLoginSuccess()
-                viewModel.resetUiState()
-            }
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                LoginContract.Effect.NavigateToHome -> onLoginSuccess()
 
-            is LoginUiState.Error -> {
-                snackbarHostState.showSnackbar(state.message)
-                viewModel.resetUiState()
-            }
+                is LoginContract.Effect.ShowError -> snackbarHostState.showSnackbar(message = effect.message)
 
-            else -> Unit
+            }
         }
     }
-
     LoginScreenContent(
-        formState = formState,
-        uiState = uiState,
+        state = state,
         snackbarHostState = snackbarHostState,
-        onEmailChanged = viewModel::onEmailChanged,
-        onPasswordChanged = viewModel::onPasswordChanged,
-        onPasswordVisibilityClick = viewModel::togglePasswordVisibility,
-        onLoginClick = viewModel::login,
+        onIntent = viewModel::onIntent,
         onForgotPassword = onForgotPassword,
         onSignUp = onSignUp,
         onGoogleClick = onGoogleClick,
@@ -102,23 +90,16 @@ fun LoginScreen(
 
 @Composable
 fun LoginScreenContent(
-    formState: LoginFormState,
-    uiState: LoginUiState,
+    state: LoginContract.State,
     snackbarHostState: SnackbarHostState,
-    onEmailChanged: (String) -> Unit,
-    onPasswordChanged: (String) -> Unit,
-    onPasswordVisibilityClick: () -> Unit,
-    onLoginClick: () -> Unit,
+    onIntent: (LoginContract.Intent) -> Unit,
     onForgotPassword: () -> Unit,
     onSignUp: () -> Unit,
     onGoogleClick: () -> Unit,
     onFacebookClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val isLoading = uiState is LoginUiState.Loading
-
     Scaffold(
-        modifier = modifier,
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState
@@ -127,7 +108,7 @@ fun LoginScreenContent(
     ) { innerPadding ->
 
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .background(Color.White)
@@ -153,12 +134,16 @@ fun LoginScreenContent(
             Spacer(modifier = Modifier.height(40.dp))
 
             CustomOutlinedTextField(
-                value = formState.email,
-                onValueChange = onEmailChanged,
+                value = state.email,
+                onValueChange = { email ->
+                    onIntent(
+                        LoginContract.Intent.EmailChanged(email)
+                    )
+                },
                 placeHolder = "Email",
                 leadingIcon = R.drawable.ic_sms,
-                isError = formState.emailError != null,
-                errorMessage = formState.emailError,
+                isError = state.emailError != null,
+                errorMessage = state.emailError,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email
                 )
@@ -167,17 +152,27 @@ fun LoginScreenContent(
             Spacer(modifier = Modifier.height(16.dp))
 
             CustomOutlinedTextField(
-                value = formState.password,
-                onValueChange = onPasswordChanged,
+                value = state.password,
+                onValueChange = { password ->
+                    onIntent(
+                        LoginContract.Intent.PasswordChanged(password)
+                    )
+                },
                 placeHolder = "Password",
                 leadingIcon = R.drawable.ic_lock,
-                trailingIcon = if (formState.isPasswordVisible) {
+                trailingIcon = if (state.isPasswordVisible) {
                     R.drawable.eye_off
                 } else {
                     R.drawable.ic_eye
                 },
-                onTrailingIconClick = onPasswordVisibilityClick,
-                visualTransformation = if (formState.isPasswordVisible) {
+                onTrailingIconClick = {
+                    onIntent(
+                        LoginContract.Intent.TogglePasswordVisibility
+                    )
+                },
+                isError = state.passwordError != null,
+                errorMessage = state.passwordError,
+                visualTransformation = if (state.isPasswordVisible) {
                     VisualTransformation.None
                 } else {
                     PasswordVisualTransformation()
@@ -201,8 +196,12 @@ fun LoginScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(54.dp),
-                enabled = !isLoading,
-                onClick = onLoginClick,
+                enabled = !state.isLoading,
+                onClick = {
+                    onIntent(
+                        LoginContract.Intent.LoginClicked
+                    )
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = activeButtonColor,
                     disabledContainerColor = disabledButtonColor,
@@ -210,7 +209,7 @@ fun LoginScreenContent(
                 ),
                 shape = RoundedCornerShape(10.dp)
             ) {
-                if (isLoading) {
+                if (state.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(22.dp),
                         color = Color.White,
@@ -278,15 +277,11 @@ fun LoginScreenContent(
 @Composable
 private fun LoginScreenPreview() {
     LoginScreenContent(
-        formState = LoginFormState(),
-        uiState = LoginUiState.Idle,
+        state = LoginContract.State(),
         snackbarHostState = remember {
             SnackbarHostState()
         },
-        onEmailChanged = {},
-        onPasswordChanged = {},
-        onPasswordVisibilityClick = {},
-        onLoginClick = {},
+        onIntent = {},
         onForgotPassword = {},
         onSignUp = {},
         onGoogleClick = {},

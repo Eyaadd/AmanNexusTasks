@@ -12,4 +12,5 @@ sealed interface Screen {
     data object Home : Screen
 
 
+
 }
