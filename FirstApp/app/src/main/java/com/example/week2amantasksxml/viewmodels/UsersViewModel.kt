@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.week2amantasksxml.models.User
 import com.example.week2amantasksxml.repository.UsersRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
@@ -31,8 +32,9 @@ class UsersViewModel(
     }
 
     private fun fetchUsers() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             allUsers = usersRepository.fetchUsers()
+            // What if I want to update data in IO Thread, will use something instead of .value
             _users.value = allUsers
         }
     }

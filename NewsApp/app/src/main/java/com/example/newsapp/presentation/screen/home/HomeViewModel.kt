@@ -93,7 +93,6 @@ class HomeViewModel(
             else -> {
                 _uiState.update { currentState ->
                     currentState.copy(
-                        selectedRoute = destination
                     )
                 }
             }
