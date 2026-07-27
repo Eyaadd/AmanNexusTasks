@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,7 @@ fun AddTaskSection(
     taskTitle: String,
     onTaskTitleChange: (String) -> Unit,
     onAddTaskClick: () -> Unit,
+    placeholder: String,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -70,7 +72,7 @@ fun AddTaskSection(
                 ) {
                     if (taskTitle.isEmpty()) {
                         Text(
-                            text = "input a new task", color = PlaceholderColor, fontSize = 13.sp
+                            text = placeholder, color = PlaceholderColor, fontSize = 13.sp
                         )
                     }
 
@@ -109,6 +111,6 @@ private fun AddTaskSectionPreview() {
             .background(Color(0xFF111111))
             .padding(16.dp)
     ) {
-        AddTaskSection(taskTitle = "", onTaskTitleChange = {}, onAddTaskClick = {})
+        AddTaskSection(taskTitle = "", onTaskTitleChange = {}, onAddTaskClick = {}, placeholder = "")
     }
 }

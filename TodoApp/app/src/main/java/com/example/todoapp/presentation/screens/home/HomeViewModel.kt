@@ -22,7 +22,7 @@ class HomeViewModel(
     fun onIntent(intent: HomeContract.Intent) {
         when (intent) {
             is HomeContract.Intent.DeleteTask -> deleteTask(intent.task)
-            is HomeContract.Intent.InsertTask -> insertTask(intent.title)
+            is HomeContract.Intent.InsertTask -> insertTask(intent.title, intent.description)
             is HomeContract.Intent.ToggleTaskCompletion -> updateTaskCompletion(intent.task)
             is HomeContract.Intent.OnTaskTitleChanged -> {
                 _uiState.update {
@@ -30,6 +30,9 @@ class HomeViewModel(
                 }
             }
 
+            is HomeContract.Intent.OnTaskDescriptionChanged -> _uiState.update {
+                it.copy(taskDescription = intent.description)
+            }
         }
     }
 
@@ -71,20 +74,21 @@ class HomeViewModel(
         }
     }
 
-    private fun insertTask(title: String) {
+    private fun insertTask(title: String, description: String) {
         val trimmedTitle = title.trim()
-        if (trimmedTitle.isBlank()) {
-            updateErrorState("Task title cannot be empty")
+        val trimmedDescription = description.trim()
+        if (trimmedTitle.isBlank() || trimmedDescription.isBlank()) {
+            updateErrorState("Task title or description cannot be empty")
             return
         }
         val task = TaskEntity(
-            title = trimmedTitle
+            title = trimmedTitle, description = trimmedDescription
         )
         viewModelScope.launch {
             try {
                 repository.insertTask(task)
                 _uiState.update {
-                    it.copy(taskTitle = "")
+                    it.copy(taskTitle = "", taskDescription = "")
                 }
             } catch (exception: CancellationException) {
                 throw exception
@@ -117,8 +121,7 @@ class HomeViewModel(
     private fun updateLoadingState() {
         _uiState.update {
             it.copy(
-                isLoading = true,
-                errorMessage = null
+                isLoading = true, errorMessage = null
             )
         }
     }
@@ -126,9 +129,7 @@ class HomeViewModel(
     private fun updateSuccessState(tasks: List<TaskEntity>) {
         _uiState.update {
             it.copy(
-                taskList = tasks,
-                isLoading = false,
-                errorMessage = null
+                taskList = tasks, isLoading = false, errorMessage = null
             )
         }
     }
@@ -136,8 +137,7 @@ class HomeViewModel(
     private fun updateErrorState(message: String?) {
         _uiState.update {
             it.copy(
-                errorMessage = message ?: "Failed to load tasks",
-                isLoading = false
+                errorMessage = message ?: "Failed to load tasks", isLoading = false
             )
         }
     }

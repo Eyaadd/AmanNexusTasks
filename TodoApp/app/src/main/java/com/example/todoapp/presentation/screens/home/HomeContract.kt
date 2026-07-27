@@ -8,6 +8,7 @@ object HomeContract {
         val isLoading: Boolean = false,
         val taskList: List<TaskEntity> = emptyList(),
         val taskTitle: String = "",
+        val taskDescription: String? = null,
         val errorMessage: String? = null
     )
 
@@ -18,8 +19,13 @@ object HomeContract {
             val title: String
         ) : Intent
 
+        data class OnTaskDescriptionChanged(
+            val description: String
+        ) : Intent
+
         data class InsertTask(
-            val title: String
+            val title: String,
+            val description: String?
         ) : Intent
 
         data class ToggleTaskCompletion(

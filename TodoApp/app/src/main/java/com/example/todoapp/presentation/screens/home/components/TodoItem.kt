@@ -3,6 +3,7 @@ package com.example.todoapp.presentation.screens.home.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,13 +65,30 @@ fun TodoItem(
                 )
             )
 
-            Text(
-                text = task.title,
-                fontFamily = interBold,
-                fontSize = 14.sp,
-                color = Color.White,
-                maxLines = 1
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = task.title,
+                    fontFamily = interBold,
+                    fontSize = 14.sp,
+                    color = Color.White,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                task.description?.let {
+                    Text(
+                        text = it,
+                        fontFamily = interBold,
+                        fontSize = 10.sp,
+                        color = Color.White,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+            }
 
         }
 
@@ -95,7 +114,7 @@ fun TodoItem(
 fun TodoItemPreview() {
     TodoItem(
         task = TaskEntity(
-            id = 1, title = "Test", isCompleted = false
+            id = 1, title = "Test", isCompleted = false, description = "This is a test"
         ), onToggleClick = {}, onDeleteClick = {}, checkBoxColor = Color.Red
     )
 }
