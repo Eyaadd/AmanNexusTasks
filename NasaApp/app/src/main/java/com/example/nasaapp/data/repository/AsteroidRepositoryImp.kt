@@ -4,8 +4,8 @@ package com.example.nasaapp.data.repository
 import com.example.nasaapp.data.source.local.dao.AsteroidDao
 import com.example.nasaapp.data.source.remote.NasaApi
 import com.example.nasaapp.data.source.remote.mapper.toEntity
-import com.example.nasaapp.presentation.mapper.toUiModel
 import com.example.nasaapp.data.model.AsteroidUiModel
+import com.example.nasaapp.data.source.remote.mapper.toUiModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

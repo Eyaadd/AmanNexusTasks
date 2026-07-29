@@ -88,6 +88,10 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp("androidx.room:room-compiler:2.7.2")
 
+    // WorkManager
+    implementation(libs.work.manager)
+
+
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

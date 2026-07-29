@@ -20,6 +20,9 @@ okhttp = "5.4.0"
 appcompat = "1.7.1"
 material = "1.14.0"
 
+# WorkManager
+workManager = "2.11.2"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -54,6 +57,9 @@ material = { group = "com.google.android.material", name = "material", version.r
 #Room
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+
+# WorkManager
+work-manager = { module = "androidx.work:work-runtime-ktx", version.ref = "workManager" }
 
 
 [plugins]
