@@ -24,4 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "NasaApp"
 include(":app")
- 
+include(":data")

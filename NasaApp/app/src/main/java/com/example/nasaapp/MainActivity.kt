@@ -7,21 +7,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.nasaapp.ui.theme.NasaAppTheme
+import com.example.nasaapp.presentation.screens.home.HomeScreen
+import com.example.nasaapp.presentation.theme.NasaAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val app = application as NasaApplication
         enableEdgeToEdge()
         setContent {
             NasaAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    HomeScreen(
+                        homeViewModelFactory = app.homeViewModelFactory,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -30,18 +29,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    NasaAppTheme {
-        Greeting("Android")
-    }
-}
