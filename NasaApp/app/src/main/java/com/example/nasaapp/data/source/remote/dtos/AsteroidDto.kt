@@ -1,21 +1,24 @@
 package com.example.nasaapp.data.source.remote.dtos
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class AsteroidDto(
 
-    @SerializedName("id")
+    @SerialName("id")
     val id: String?,
 
-    @SerializedName("name")
+    @SerialName("name")
     val name: String?,
 
-    @SerializedName("estimated_diameter")
+    @SerialName("estimated_diameter")
     val estimatedDiameter: EstimatedDiameterDto?,
 
-    @SerializedName("is_potentially_hazardous_asteroid")
+    @SerialName("is_potentially_hazardous_asteroid")
     val isPotentiallyHazardousAsteroid: Boolean?,
 
-    @SerializedName("close_approach_data")
+    @SerialName("close_approach_data")
     val closeApproachData: List<CloseApproachDto>?
 )

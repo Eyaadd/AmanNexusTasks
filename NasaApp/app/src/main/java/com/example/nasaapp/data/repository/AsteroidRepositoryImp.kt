@@ -1,16 +1,16 @@
 package com.example.nasaapp.data.repository
 
 
-import com.example.nasaapp.data.source.local.dao.AsteroidDao
-import com.example.nasaapp.data.source.remote.NasaApi
-import com.example.nasaapp.data.source.remote.mapper.toEntity
 import com.example.nasaapp.data.model.AsteroidUiModel
+import com.example.nasaapp.data.source.local.dao.AsteroidDao
+import com.example.nasaapp.data.source.remote.KtorApi
+import com.example.nasaapp.data.source.remote.mapper.toEntity
 import com.example.nasaapp.data.source.remote.mapper.toUiModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class AsteroidRepositoryImpl(
-    private val nasaApi: NasaApi,
+    private val ktorApi: KtorApi,
     private val asteroidDao: AsteroidDao
 ) : AsteroidRepository {
 
@@ -24,7 +24,7 @@ class AsteroidRepositoryImpl(
     }
 
     override suspend fun refreshAsteroids() {
-        val response = nasaApi.getAsteroidsInfo()
+        val response = ktorApi.getAsteroidsInfo()
 
         val asteroids = response.nearEarthObjects
             .values

@@ -1,67 +1,62 @@
 package com.example.nasaapp.data.worker
 
-
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.nasaapp.NasaApplication
-import retrofit2.HttpException
-import java.io.IOException
-import android.util.Log
-
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.ServerResponseException
+import io.ktor.utils.io.errors.IOException
+import kotlinx.coroutines.CancellationException
 
 class AsteroidRefreshWorker(
     appContext: Context,
     workerParameters: WorkerParameters
-) : CoroutineWorker(
-    appContext,
-    workerParameters
-) {
+) : CoroutineWorker(appContext, workerParameters) {
 
     override suspend fun doWork(): Result {
-        val application =
-            applicationContext as NasaApplication
-
-        Log.d(
-            WORKER_TAG,
-            "Asteroid refresh started"
-        )
+        val application = applicationContext as NasaApplication
 
         return try {
             application.repository.refreshAsteroids()
 
-            Log.d(
-                WORKER_TAG,
-                "Asteroid refresh succeeded"
-            )
-
+            Log.d(TAG, "Asteroids refreshed successfully")
             Result.success()
-        } catch (exception: IOException) {
+
+        } catch (exception: CancellationException) {
+            throw exception
+
+        } catch (exception: ServerResponseException) {
             Log.e(
-                WORKER_TAG,
-                "Network error. Retrying.",
+                TAG,
+                "NASA server unavailable: ${exception.response.status}. Retrying...",
                 exception
             )
 
             Result.retry()
-        } catch (exception: HttpException) {
+
+        } catch (exception: ClientRequestException) {
             Log.e(
-                WORKER_TAG,
-                "HTTP error: ${exception.code()}",
+                TAG,
+                "NASA request rejected: ${exception.response.status}",
                 exception
             )
 
-            when (exception.code()) {
-                408,
-                429 -> Result.retry()
+            Result.failure()
 
-                in 500..599 -> Result.retry()
+        } catch (exception: IOException) {
+            Log.e(
+                TAG,
+                "Network connection failed. Retrying...",
+                exception
+            )
 
-                else -> Result.failure()
-            }
+            Result.retry()
+
         } catch (exception: Exception) {
             Log.e(
-                WORKER_TAG,
+                TAG,
                 "Unexpected refresh error",
                 exception
             )
@@ -71,7 +66,6 @@ class AsteroidRefreshWorker(
     }
 
     companion object {
-        private const val WORKER_TAG =
-            "AsteroidRefreshWorker"
+        private const val TAG = "AsteroidRefreshWorker"
     }
 }

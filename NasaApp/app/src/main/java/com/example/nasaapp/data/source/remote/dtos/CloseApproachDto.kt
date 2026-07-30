@@ -1,15 +1,18 @@
 package com.example.nasaapp.data.source.remote.dtos
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CloseApproachDto(
 
-    @SerializedName("close_approach_date")
+    @SerialName("close_approach_date")
     val closeApproachDate: String?,
 
-    @SerializedName("relative_velocity")
+    @SerialName("relative_velocity")
     val relativeVelocity: RelativeVelocityDto?,
 
-    @SerializedName("miss_distance")
+    @SerialName("miss_distance")
     val missDistance: MissDistanceDto?
 )
