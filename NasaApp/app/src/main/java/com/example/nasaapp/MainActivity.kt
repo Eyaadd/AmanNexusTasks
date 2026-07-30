@@ -14,16 +14,11 @@ import com.example.nasaapp.presentation.theme.NasaAppTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val app = application as NasaApplication
         enableEdgeToEdge()
         setContent {
             NasaAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen(
-                        homeViewModelFactory = app.homeViewModelFactory,
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                HomeScreen()
+
             }
         }
     }

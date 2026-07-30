@@ -1,35 +1,28 @@
 package com.example.nasaapp
 
 import android.app.Application
-import com.example.nasaapp.data.repository.AsteroidRepository
-import com.example.nasaapp.data.repository.AsteroidRepositoryImpl
-import com.example.nasaapp.data.source.local.database.AsteroidDatabase
-import com.example.nasaapp.data.source.remote.KtorApi
-import com.example.nasaapp.data.source.remote.KtorNetworkModule
-import com.example.nasaapp.data.worker.AsteroidSyncScheduler
-import com.example.nasaapp.presentation.screens.home.HomeViewModelFactory
+import android.content.res.Configuration
+import com.example.nasaapp.di.asteroidRepositoryModule
+import com.example.nasaapp.di.databaseModule
+import com.example.nasaapp.di.ktorModule
+import com.example.nasaapp.di.viewModelModule
+import com.example.nasaapp.di.workerModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.context.startKoin
 
 class NasaApplication : Application() {
 
-    val repository: AsteroidRepository by lazy {
-        AsteroidRepositoryImpl(
-            ktorApi = KtorApi(
-                client = KtorNetworkModule.client
-            ),
-            asteroidDao = AsteroidDatabase
-                .getInstance(this)
-                .asteroidDao()
-        )
-    }
-
-    val homeViewModelFactory by lazy {
-        HomeViewModelFactory(repository)
-    }
     override fun onCreate() {
         super.onCreate()
-
-        AsteroidSyncScheduler.schedulePeriodicRefresh(
-            context = this
-        )
+        startKoin {
+            androidLogger()
+            androidContext(this@NasaApplication)
+            workManagerFactory()
+            modules(
+                ktorModule, viewModelModule, databaseModule, asteroidRepositoryModule, workerModule
+            )
+        }
     }
 }

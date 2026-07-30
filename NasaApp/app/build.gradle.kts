@@ -90,6 +90,11 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.android)
 
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.workmanager)
+
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
 

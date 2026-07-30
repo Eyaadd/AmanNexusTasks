@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.nasaapp.NasaApplication
+import com.example.nasaapp.data.repository.AsteroidRepository
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.utils.io.errors.IOException
@@ -12,14 +12,14 @@ import kotlinx.coroutines.CancellationException
 
 class AsteroidRefreshWorker(
     appContext: Context,
-    workerParameters: WorkerParameters
+    workerParameters: WorkerParameters,
+    private val repository: AsteroidRepository,
 ) : CoroutineWorker(appContext, workerParameters) {
 
     override suspend fun doWork(): Result {
-        val application = applicationContext as NasaApplication
 
         return try {
-            application.repository.refreshAsteroids()
+            repository.refreshAsteroids()
 
             Log.d(TAG, "Asteroids refreshed successfully")
             Result.success()
