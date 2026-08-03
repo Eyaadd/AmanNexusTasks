@@ -1,3 +1,13 @@
+import java.util.Properties
+
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+
+    if (localPropertiesFile.exists()) {
+        load(localPropertiesFile.inputStream())
+    }
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -21,6 +31,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val spoonacularApiKey =
+            localProperties.getProperty("SPOONACULAR_API_KEY") ?: ""
+
+        buildConfigField(
+            type = "String",
+            name = "SPOONACULAR_API_KEY",
+            value = "\"$spoonacularApiKey\""
+        )
     }
 
     buildTypes {
