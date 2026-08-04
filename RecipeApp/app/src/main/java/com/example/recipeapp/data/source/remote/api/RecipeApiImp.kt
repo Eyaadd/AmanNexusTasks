@@ -46,4 +46,36 @@ class RecipeApiImpl(
             }
             .body()
     }
+    override suspend fun getPopularCategoryRecipes(
+        query: String?,
+        type: String?,
+        number: Int
+    ): SearchRecipesResponseDto {
+        return httpClient.get("recipes/complexSearch") {
+            query
+                ?.takeIf { it.isNotBlank() }
+                ?.let { parameter("query", it) }
+
+            type
+                ?.takeIf { it.isNotBlank() }
+                ?.let { parameter("type", it) }
+
+            parameter("number", number)
+            parameter("addRecipeInformation", true)
+            parameter("fillIngredients", true)
+        }.body()
+    }
+
+    override suspend fun getRecentRecipes(
+        number: Int,
+        offset: Int
+    ): SearchRecipesResponseDto {
+        return httpClient.get("recipes/complexSearch") {
+            parameter("number", number)
+            parameter("offset", offset)
+            parameter("sort", "popularity")
+            parameter("sortDirection", "desc")
+            parameter("addRecipeInformation", true)
+        }.body()
+    }
 }

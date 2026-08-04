@@ -1,7 +1,8 @@
 package com.example.recipeapp.data.model
 
 data class RecipeSummaryUiModel(
-    val image: String?,
+    val id: Int,
+    val imageUrl: String?,
     val rating : Double? = null,
     val readyInMinutes: Int? = null,
     val recipeName: String,

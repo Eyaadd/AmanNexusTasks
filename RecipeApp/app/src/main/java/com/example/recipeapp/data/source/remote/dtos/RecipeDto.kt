@@ -18,7 +18,7 @@ data class RecipeDto(
     val servings: Int? = null,
 
     val extendedIngredients: List<IngredientDto> = emptyList(),
-
+    val sourceUrl: String? = null,
     val analyzedInstructions: List<AnalyzedInstructionDto> = emptyList()
 
 )

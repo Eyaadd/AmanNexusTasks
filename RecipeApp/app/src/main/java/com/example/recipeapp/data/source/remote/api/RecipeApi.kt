@@ -20,4 +20,15 @@ interface RecipeApi {
     suspend fun getRecipeDetails(
         recipeId: Int
     ): RecipeDto
+
+    suspend fun getPopularCategoryRecipes(
+        query: String?,
+        type: String?,
+        number: Int = 5
+    ): SearchRecipesResponseDto
+
+    suspend fun getRecentRecipes(
+        number: Int = 8,
+        offset: Int = 5
+    ): SearchRecipesResponseDto
 }
