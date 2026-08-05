@@ -1,8 +1,8 @@
 package com.example.recipeapp.data.source.remote.mapper
 
-import com.example.recipeapp.data.model.DirectionUiModel
-import com.example.recipeapp.data.model.RecipeDetailsUiModel
-import com.example.recipeapp.data.model.RecipeSummaryUiModel
+import com.example.recipeapp.domain.model.DirectionUiModel
+import com.example.recipeapp.domain.model.RecipeDetailsUiModel
+import com.example.recipeapp.domain.model.RecipeSummaryUiModel
 import com.example.recipeapp.data.source.remote.dtos.RecipeDto
 import com.example.recipeapp.data.source.local.entity.FavoriteRecipeEntity
 

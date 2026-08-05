@@ -1,6 +1,6 @@
 package com.example.recipeapp.presentation.screens.favorites
 
-import com.example.recipeapp.data.model.RecipeSummaryUiModel
+import com.example.recipeapp.domain.model.RecipeSummaryUiModel
 
 object FavoritesContract {
 

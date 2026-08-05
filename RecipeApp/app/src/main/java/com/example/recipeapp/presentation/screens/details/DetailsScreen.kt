@@ -1,6 +1,6 @@
 package com.example.recipeapp.presentation.screens.details
 
-import com.example.recipeapp.data.model.DetailsTab
+import com.example.recipeapp.domain.model.DetailsTab
 
 
 import androidx.compose.foundation.layout.Column
@@ -19,12 +19,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.recipeapp.data.model.DirectionUiModel
-import com.example.recipeapp.data.model.RecipeDetailsUiModel
+import com.example.recipeapp.domain.model.DirectionUiModel
+import com.example.recipeapp.domain.model.RecipeDetailsUiModel
 import com.example.recipeapp.presentation.screens.details.components.DetailsImageHeader
 import com.example.recipeapp.presentation.screens.details.components.DetailsTabs
 import com.example.recipeapp.presentation.screens.details.components.DirectionsContent

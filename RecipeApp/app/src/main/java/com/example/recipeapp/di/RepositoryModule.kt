@@ -1,13 +1,13 @@
 package com.example.recipeapp.di
 
-import com.example.recipeapp.data.repository.RecipeRepository
-import com.example.recipeapp.data.repository.RecipeRepositoryImp
+import com.example.recipeapp.domain.repository.RecipeRepository
+import com.example.recipeapp.data.repository.RecipeRepositoryImpl
 import org.koin.dsl.module
 
 val repositoryModule = module {
 
     single<RecipeRepository> {
-        RecipeRepositoryImp(
+        RecipeRepositoryImpl(
             recipeApi = get(),
             favoriteRecipeDao = get()
         )

@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.recipeapp.data.model.RecipeSummaryUiModel
+import com.example.recipeapp.domain.model.RecipeSummaryUiModel
 import com.example.recipeapp.presentation.theme.ScreenTextColor
 
 @Composable

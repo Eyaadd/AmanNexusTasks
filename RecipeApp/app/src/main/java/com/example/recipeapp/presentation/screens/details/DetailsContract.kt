@@ -1,7 +1,7 @@
 package com.example.recipeapp.presentation.screens.details
 
-import com.example.recipeapp.data.model.DetailsTab
-import com.example.recipeapp.data.model.RecipeDetailsUiModel
+import com.example.recipeapp.domain.model.DetailsTab
+import com.example.recipeapp.domain.model.RecipeDetailsUiModel
 
 
 object DetailsContract {

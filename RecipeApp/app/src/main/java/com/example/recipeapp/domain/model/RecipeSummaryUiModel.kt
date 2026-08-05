@@ -1,4 +1,4 @@
-package com.example.recipeapp.data.model
+package com.example.recipeapp.domain.model
 
 data class RecipeSummaryUiModel(
     val id: Int,

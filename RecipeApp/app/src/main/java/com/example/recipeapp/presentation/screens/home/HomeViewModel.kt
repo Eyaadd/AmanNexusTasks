@@ -2,22 +2,32 @@ package com.example.recipeapp.presentation.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipeapp.data.model.RecipeCategory
-import com.example.recipeapp.data.model.RecipeSummaryUiModel
-import com.example.recipeapp.data.repository.RecipeRepository
+import com.example.recipeapp.domain.model.RecipeCategory
+import com.example.recipeapp.domain.model.RecipeSummaryUiModel
+import com.example.recipeapp.domain.usecase.AddRecipeToFavoriteUseCase
+import com.example.recipeapp.domain.usecase.GetPopularCategoryRecipesUseCase
+import com.example.recipeapp.domain.usecase.GetRecentRecipesUseCase
+import com.example.recipeapp.domain.usecase.GetRecipesUseCase
+import com.example.recipeapp.domain.usecase.ObserveFavoriteRecipesUseCase
+import com.example.recipeapp.domain.usecase.RemoveRecipeFromFavoritesUseCase
+import com.example.recipeapp.presentation.mapper.toUiMessage
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.net.ConnectException
-import java.net.UnknownHostException
 
 class HomeViewModel(
-    private val recipeRepository: RecipeRepository
+    private val getRecipesUseCase: GetRecipesUseCase,
+    private val getPopularCategoryRecipesUseCase: GetPopularCategoryRecipesUseCase,
+    private val getRecentRecipesUseCase: GetRecentRecipesUseCase,
+    private val observeFavoriteRecipesUseCase: ObserveFavoriteRecipesUseCase,
+    private val removeRecipeFromFavoritesUseCase: RemoveRecipeFromFavoritesUseCase,
+    private val addRecipeToFavoriteUseCase: AddRecipeToFavoriteUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeContract.HomeState())
@@ -35,72 +45,79 @@ class HomeViewModel(
 
     fun onIntent(intent: HomeContract.HomeIntent) {
         when (intent) {
-            HomeContract.HomeIntent.Retry -> loadHome()
-
-            is HomeContract.HomeIntent.OnCategorySelected -> selectCategory(intent.category)
-
-            is HomeContract.HomeIntent.OnSearchQueryChanged -> _uiState.update {
-                it.copy(searchQuery = intent.query)
+            HomeContract.HomeIntent.Retry -> {
+                loadHome()
             }
 
-            is HomeContract.HomeIntent.OnRecipeClicked -> navigateToDetails(intent.recipe.id)
+            is HomeContract.HomeIntent.OnCategorySelected -> {
+                selectCategory(intent.category)
+            }
 
-            is HomeContract.HomeIntent.OnFavoriteClicked -> toggleFavorite(intent.recipe)
-            HomeContract.HomeIntent.OnSearchBarClicked -> navigateToSearch()
+            is HomeContract.HomeIntent.OnSearchQueryChanged -> {
+                updateSearchQuery(intent.query)
+            }
+
+            is HomeContract.HomeIntent.OnRecipeClicked -> {
+                navigateToDetails(intent.recipe.id)
+            }
+
+            is HomeContract.HomeIntent.OnFavoriteClicked -> {
+                toggleFavorite(intent.recipe)
+            }
+
+            HomeContract.HomeIntent.OnSearchBarClicked -> {
+                navigateToSearch()
+            }
         }
     }
 
     private fun loadHome() {
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                    isLoading = true, errorMessage = null
-                )
-            }
+            updateLoadingState()
 
             try {
                 val selectedCategory = _uiState.value.selectedCategory
 
-                val trendingRecipesDeferred = async {
-                    recipeRepository.getRecipes()
+                val trendingDeferred = async {
+                    getRecipesUseCase()
                 }
 
                 val popularDeferred = async {
-                    recipeRepository.getPopularCategoryRecipes(
-                        selectedCategory
-                    )
+                    getPopularCategoryRecipesUseCase(selectedCategory)
                 }
 
                 val recentDeferred = async {
-                    recipeRepository.getRecentRecipes()
+                    getRecentRecipesUseCase()
                 }
-                val trendingRecipes = trendingRecipesDeferred.await()
-                val popularRecipes = popularDeferred.await()
-                val recentRecipes = recentDeferred.await()
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        trendingRecipes = trendingRecipes,
-                        popularCategoryRecipes = popularRecipes,
-                        recentRecipes = recentRecipes
+
+                val trendingResult = trendingDeferred.await()
+                val popularResult = popularDeferred.await()
+                val recentResult = recentDeferred.await()
+
+                val failure = listOf(
+                    trendingResult, popularResult, recentResult
+                ).firstNotNullOfOrNull { result ->
+                    result.exceptionOrNull()
+                }
+
+                if (failure != null) {
+                    updateErrorState(
+                        message = failure.toUiMessage()
                     )
+                    return@launch
                 }
+
+                updateSuccessState(
+                    trendingRecipes = trendingResult.getOrThrow(),
+                    popularRecipes = popularResult.getOrThrow(),
+                    recentRecipes = recentResult.getOrThrow()
+                )
             } catch (exception: CancellationException) {
                 throw exception
-            } catch (exception: ConnectException) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = "Couldn't connect to the server. Check your internet connection."
-                    )
-                }
             } catch (exception: Exception) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = exception.message ?: "Unable to load recipes"
-                    )
-                }
+                updateErrorState(
+                    message = exception.toUiMessage()
+                )
             }
         }
     }
@@ -108,75 +125,77 @@ class HomeViewModel(
     private fun selectCategory(
         category: RecipeCategory
     ) {
-        if (category == _uiState.value.selectedCategory) return
+        if (category == _uiState.value.selectedCategory) {
+            return
+        }
 
-        _uiState.update {
-            it.copy(
-                selectedCategory = category, isCategoryLoading = true
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedCategory = category
             )
         }
-
-        viewModelScope.launch {
-            try {
-                val recipes = recipeRepository.getPopularCategoryRecipes(category)
-
-                _uiState.update {
-                    it.copy(
-                        isCategoryLoading = false, popularCategoryRecipes = recipes
-                    )
-                }
-            } catch (exception: CancellationException) {
-                throw exception
-            } catch (exception: Exception) {
-                _uiState.update {
-                    it.copy(isCategoryLoading = false)
-                }
-
-                _effect.send(
-                    HomeContract.HomeEffect.ShowMessage(
-                        exception.message ?: "Unable to load category"
-                    )
-                )
-            }
-        }
+        loadHome()
     }
 
-    private fun navigateToDetails(recipeId: Int) {
-        viewModelScope.launch {
-            _effect.send(
-                HomeContract.HomeEffect.NavigateToRecipeDetails(
-                    recipeId
-                )
+    private fun updateSearchQuery(
+        query: String
+    ) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                searchQuery = query
             )
         }
     }
 
-    private fun toggleFavorite(recipe: RecipeSummaryUiModel) {
-        if (recipe.id in _uiState.value.favoriteRecipeIds) {
+    private fun observeFavoriteRecipes() {
+        viewModelScope.launch {
+            observeFavoriteRecipesUseCase().catch { exception ->
+                    if (exception is CancellationException) {
+                        throw exception
+                    }
+
+                    _effect.send(
+                        HomeContract.HomeEffect.ShowMessage(
+                            message = exception.toUiMessage()
+                        )
+                    )
+                }.collect { favoriteRecipeIds ->
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            favoriteRecipeIds = favoriteRecipeIds
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun toggleFavorite(
+        recipe: RecipeSummaryUiModel
+    ) {
+        val isFavorite = recipe.id in _uiState.value.favoriteRecipeIds
+
+        if (isFavorite) {
             removeRecipeFromFavorites(recipe.id)
         } else {
             addRecipeToFavorites(recipe)
         }
     }
 
-    private fun observeFavoriteRecipes() {
-        val favoriteRecipes = recipeRepository.observeFavoriteRecipes()
+    private fun removeRecipeFromFavorites(
+        recipeId: Int
+    ) {
         viewModelScope.launch {
-            favoriteRecipes.collect { favoriteRecipe ->
-                _uiState.update { it ->
-                    it.copy(
-                        favoriteRecipeIds = favoriteRecipe.map {
-                            it.id
-                        }.toSet()
-                    )
-                }
-            }
-        }
-    }
+            val result = removeRecipeFromFavoritesUseCase(recipeId)
 
-    private fun removeRecipeFromFavorites(recipeId: Int) {
-        viewModelScope.launch {
-            recipeRepository.removeRecipeFromFavorites(recipeId)
+            val failure = result.exceptionOrNull()
+
+            if (failure != null) {
+                _effect.send(
+                    HomeContract.HomeEffect.ShowMessage(
+                        message = failure.toUiMessage()
+                    )
+                )
+            }
         }
     }
 
@@ -184,14 +203,75 @@ class HomeViewModel(
         recipe: RecipeSummaryUiModel
     ) {
         viewModelScope.launch {
-            recipeRepository.addRecipeToFavorites(recipe)
+            val result = addRecipeToFavoriteUseCase(recipe)
+
+            val failure = result.exceptionOrNull()
+
+            if (failure != null) {
+                _effect.send(
+                    HomeContract.HomeEffect.ShowMessage(
+                        message = failure.toUiMessage()
+                    )
+                )
+            }
+        }
+    }
+
+    private fun navigateToDetails(
+        recipeId: Int
+    ) {
+        viewModelScope.launch {
+            _effect.send(
+                HomeContract.HomeEffect.NavigateToRecipeDetails(
+                    recipeId = recipeId
+                )
+            )
         }
     }
 
     private fun navigateToSearch() {
         viewModelScope.launch {
-            _effect.send(HomeContract.HomeEffect.NavigateToSearch)
+            _effect.send(
+                HomeContract.HomeEffect.NavigateToSearch
+            )
         }
     }
 
+    private fun updateLoadingState() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isLoading = true, errorMessage = null
+            )
+        }
+    }
+
+    private fun updateSuccessState(
+        trendingRecipes: List<RecipeSummaryUiModel>,
+        popularRecipes: List<RecipeSummaryUiModel>,
+        recentRecipes: List<RecipeSummaryUiModel>
+    ) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isLoading = false,
+                errorMessage = null,
+                trendingRecipes = trendingRecipes,
+                popularCategoryRecipes = popularRecipes,
+                recentRecipes = recentRecipes
+            )
+        }
+    }
+
+    private fun updateErrorState(
+        message: String
+    ) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isLoading = false,
+                errorMessage = message,
+                trendingRecipes = emptyList(),
+                popularCategoryRecipes = emptyList(),
+                recentRecipes = emptyList()
+            )
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package com.example.recipeapp.presentation.screens.home
 
-import com.example.recipeapp.data.model.RecipeCategory
-import com.example.recipeapp.data.model.RecipeSummaryUiModel
+import com.example.recipeapp.domain.model.RecipeCategory
+import com.example.recipeapp.domain.model.RecipeSummaryUiModel
 
 object HomeContract {
     data class HomeState(

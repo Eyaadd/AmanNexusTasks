@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.recipeapp.data.model.DetailsTab
+import com.example.recipeapp.domain.model.DetailsTab
 
 @Composable
 fun DetailsTabs(

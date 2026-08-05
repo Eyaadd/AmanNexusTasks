@@ -11,7 +11,12 @@ val viewModelModule = module {
 
     viewModel {
         HomeViewModel(
-            recipeRepository = get()
+            getRecipesUseCase = get(),
+            getPopularCategoryRecipesUseCase = get(),
+            getRecentRecipesUseCase = get(),
+            observeFavoriteRecipesUseCase = get(),
+            removeRecipeFromFavoritesUseCase = get(),
+            addRecipeToFavoriteUseCase = get(),
         )
     }
     viewModel {
@@ -22,7 +27,10 @@ val viewModelModule = module {
     viewModel { parameters ->
         DetailsViewModel(
             recipeId = parameters.get(),
-            recipeRepository = get()
+            getRecipeDetailsUseCase = get(),
+            observeIsFavoriteUseCase = get(),
+            addRecipeToFavoriteUseCase = get(),
+            removeRecipeFromFavoritesUseCase = get()
         )
     }
 

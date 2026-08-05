@@ -2,7 +2,7 @@ package com.example.recipeapp.presentation.screens.favorites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipeapp.data.repository.RecipeRepository
+import com.example.recipeapp.domain.repository.RecipeRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.recipeapp.R
-import com.example.recipeapp.data.model.RecipeSummaryUiModel
+import com.example.recipeapp.domain.model.RecipeSummaryUiModel
 import com.example.recipeapp.presentation.theme.ScreenTextColor
 
 @Composable

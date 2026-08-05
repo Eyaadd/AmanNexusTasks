@@ -1,4 +1,4 @@
-package com.example.recipeapp.data.model
+package com.example.recipeapp.domain.model
 
 data class DirectionUiModel(
     val number: Int,

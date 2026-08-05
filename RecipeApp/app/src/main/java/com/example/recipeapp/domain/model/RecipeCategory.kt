@@ -1,4 +1,4 @@
-package com.example.recipeapp.data.model
+package com.example.recipeapp.domain.model
 
 
 enum class RecipeCategory(
