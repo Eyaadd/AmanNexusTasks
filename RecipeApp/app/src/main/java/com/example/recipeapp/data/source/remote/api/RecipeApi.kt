@@ -31,4 +31,9 @@ interface RecipeApi {
         number: Int = 8,
         offset: Int = 5
     ): SearchRecipesResponseDto
+
+
+    suspend fun searchForRecipe(
+        query: String?,
+    ) : SearchRecipesResponseDto
 }

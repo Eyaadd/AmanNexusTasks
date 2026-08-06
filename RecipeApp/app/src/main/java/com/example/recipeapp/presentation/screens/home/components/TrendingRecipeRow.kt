@@ -11,12 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.recipeapp.domain.model.RecipeSummaryUiModel
+import com.example.recipeapp.presentation.screens.components.TrendingRecipeCard
 
 @Composable
 fun TrendingRecipesRow(
     recipes: List<RecipeSummaryUiModel>,
     favoriteRecipeIds: Set<Int>,
-    onRecipeClick: (RecipeSummaryUiModel) -> Unit,
+    onRecipeClick: (Int) -> Unit,
     onFavoriteClick: (RecipeSummaryUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -33,7 +34,7 @@ fun TrendingRecipesRow(
                 isFavorite = recipe.id in favoriteRecipeIds,
                 modifier = Modifier.width(300.dp),
                 onClick = {
-                    onRecipeClick(recipe)
+                    onRecipeClick(recipe.id)
                 },
                 onFavoriteClick = {
                     onFavoriteClick(recipe)

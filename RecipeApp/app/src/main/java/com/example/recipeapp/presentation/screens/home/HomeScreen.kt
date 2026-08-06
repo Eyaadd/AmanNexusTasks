@@ -24,7 +24,7 @@ import com.example.recipeapp.presentation.screens.home.components.PopularCategor
 import com.example.recipeapp.presentation.screens.home.components.RecentRecipeCardShimmer
 import com.example.recipeapp.presentation.screens.home.components.RecentRecipesSection
 import com.example.recipeapp.presentation.screens.home.components.RecentRecipesSectionShimmer
-import com.example.recipeapp.presentation.screens.home.components.RecipeCardShimmer
+import com.example.recipeapp.presentation.screens.components.RecipeCardShimmer
 import com.example.recipeapp.presentation.screens.home.components.TrendingHeader
 import com.example.recipeapp.presentation.screens.home.components.TrendingHeaderShimmer
 import com.example.recipeapp.presentation.screens.home.components.TrendingRecipesRow
@@ -84,6 +84,7 @@ fun HomeScreenContent(
 
         item {
             RecipeSearchBar(
+                isEditable = false,
                 query = state.searchQuery,
                 onQueryChanged = {
                     onIntent(
@@ -159,9 +160,9 @@ private fun LazyListScope.homeSuccessContent(
         TrendingRecipesRow(
             recipes = state.trendingRecipes,
             favoriteRecipeIds = state.favoriteRecipeIds,
-            onRecipeClick = { recipe ->
+            onRecipeClick = { id->
                 onIntent(
-                    HomeContract.HomeIntent.OnRecipeClicked(recipe)
+                    HomeContract.HomeIntent.OnRecipeClicked(id)
                 )
             },
             onFavoriteClick = { recipe ->
@@ -189,7 +190,7 @@ private fun LazyListScope.homeSuccessContent(
             favoriteRecipeIds = state.favoriteRecipeIds,
             onRecipeClick = { recipe ->
                 onIntent(
-                    HomeContract.HomeIntent.OnRecipeClicked(recipe)
+                    HomeContract.HomeIntent.OnRecipeClicked(recipe.id)
                 )
             },
             onFavoriteClick = { recipe ->
@@ -205,7 +206,7 @@ private fun LazyListScope.homeSuccessContent(
             recipes = state.recentRecipes,
             onRecipeClick = { recipe ->
                 onIntent(
-                    HomeContract.HomeIntent.OnRecipeClicked(recipe)
+                    HomeContract.HomeIntent.OnRecipeClicked(recipe.id)
                 )
             }
         )

@@ -15,13 +15,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.recipeapp.domain.model.SavedTab
 import com.example.recipeapp.presentation.screens.favorites.FavoritesContract
 import com.example.recipeapp.presentation.theme.RecipeYellow
 
 @Composable
 fun SavedRecipesTabs(
-    selectedTab: FavoritesContract.SavedTab,
-    onTabSelected: (FavoritesContract.SavedTab) -> Unit,
+    selectedTab: SavedTab,
+    onTabSelected: (SavedTab) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -30,9 +31,9 @@ fun SavedRecipesTabs(
         SavedTabItem(
             title = "Video",
             isSelected =
-                selectedTab == FavoritesContract.SavedTab.VIDEO,
+                selectedTab == SavedTab.VIDEO,
             onClick = {
-                onTabSelected(FavoritesContract.SavedTab.VIDEO)
+                onTabSelected(SavedTab.VIDEO)
             },
             modifier = Modifier.weight(1f)
         )
@@ -40,9 +41,9 @@ fun SavedRecipesTabs(
         SavedTabItem(
             title = "Recipes",
             isSelected =
-                selectedTab == FavoritesContract.SavedTab.RECIPES,
+                selectedTab == SavedTab.RECIPES,
             onClick = {
-                onTabSelected(FavoritesContract.SavedTab.RECIPES)
+                onTabSelected(SavedTab.RECIPES)
             },
             modifier = Modifier.weight(1f)
         )
@@ -89,7 +90,7 @@ fun SavedTabItem(
 @Composable
 private fun SavedRecipesTabsPreview() {
     SavedRecipesTabs(
-        selectedTab = FavoritesContract.SavedTab.RECIPES,
+        selectedTab = SavedTab.RECIPES,
         onTabSelected = {}
     )
 }

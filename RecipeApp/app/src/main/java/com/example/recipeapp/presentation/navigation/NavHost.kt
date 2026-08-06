@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -17,6 +18,8 @@ import androidx.navigation.toRoute
 import com.example.recipeapp.presentation.screens.details.DetailsScreen
 import com.example.recipeapp.presentation.screens.favorites.FavoritesScreen
 import com.example.recipeapp.presentation.screens.home.HomeScreen
+import com.example.recipeapp.presentation.screens.search.SearchScreen
+import com.example.recipeapp.presentation.screens.search.SearchScreenContent
 
 @Composable
 fun RecipeAppNavHost() {
@@ -42,18 +45,7 @@ fun RecipeAppNavHost() {
                 RecipeBottomNavigationBar(
                     currentDestination = currentDestination,
                     onNavigate = { route ->
-                        navController.navigate(route) {
-                            popUpTo(
-                                navController.graph
-                                    .findStartDestination()
-                                    .id
-                            ) {
-                                saveState = true
-                            }
-
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                        navController.navigateToBottomBarRoute(route)
                     }
                 )
             }
@@ -75,12 +67,21 @@ fun RecipeAppNavHost() {
                         )
                     },
                     onNavigateToSearch = {
-                        navController.navigate(AppRoute.Search)
+                        navController.navigateToBottomBarRoute(AppRoute.Search)
                     }
                 )
             }
 
             composable<AppRoute.Search> {
+                SearchScreen(
+                    onNavigateToDetails = { recipeId ->
+                        navController.navigate(
+                            AppRoute.RecipeDetails(
+                                recipeId = recipeId
+                            )
+                        )
+                    }
+                )
             }
 
             composable<AppRoute.Favorites> {
@@ -111,6 +112,19 @@ fun RecipeAppNavHost() {
                 )
             }
         }
+    }
+}
+
+fun NavHostController.navigateToBottomBarRoute(
+    route: AppRoute
+) {
+    navigate(route) {
+        popUpTo(graph.findStartDestination().id) {
+            saveState = true
+        }
+
+        launchSingleTop = true
+        restoreState = true
     }
 }
 

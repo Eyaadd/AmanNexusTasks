@@ -6,7 +6,6 @@ import com.example.recipeapp.domain.model.RecipeSummaryUiModel
 object HomeContract {
     data class HomeState(
         val isLoading: Boolean = false,
-        val isCategoryLoading: Boolean = false,
         val searchQuery: String = "",
         val trendingRecipes: List<RecipeSummaryUiModel> = emptyList(),
         val selectedCategory: RecipeCategory = RecipeCategory.VEGETABLES,
@@ -29,7 +28,7 @@ object HomeContract {
         ) : HomeIntent
 
         data class OnRecipeClicked(
-            val recipe: RecipeSummaryUiModel
+            val recipeId: Int
         ) : HomeIntent
 
         data class OnFavoriteClicked(
