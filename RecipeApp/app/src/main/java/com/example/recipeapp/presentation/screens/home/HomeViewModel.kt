@@ -58,7 +58,7 @@ class HomeViewModel(
             }
 
             is HomeContract.HomeIntent.OnRecipeClicked -> {
-                navigateToDetails(intent.recipe.id)
+                navigateToDetails(intent.recipeId)
             }
 
             is HomeContract.HomeIntent.OnFavoriteClicked -> {

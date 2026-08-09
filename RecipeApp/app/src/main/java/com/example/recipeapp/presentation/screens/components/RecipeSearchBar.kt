@@ -2,6 +2,7 @@ package com.example.recipeapp.presentation.screens.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,45 +30,63 @@ fun RecipeSearchBar(
     query: String,
     onQueryChanged: (String) -> Unit,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isEditable: Boolean = true
 ) {
-    OutlinedTextField(
-        value = query,
-        onValueChange = onQueryChanged,
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(
-                indication = null, interactionSource = remember { MutableInteractionSource() }) {
-                onClick()
+    Box(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        OutlinedTextField(
+            value = query,
+            onValueChange = onQueryChanged,
+            modifier = Modifier.fillMaxWidth(),
+            readOnly = !isEditable,
+            placeholder = {
+                Text(
+                    text = "Search recipes",
+                    color = SearchBorderColor
+                )
             },
-        placeholder = {
-            Text(
-                text = "Search recipes", color = SearchBorderColor
+            leadingIcon = {
+                Icon(
+                    modifier = Modifier.size(20.dp),
+                    painter = painterResource(R.drawable.ic_search),
+                    contentDescription = "Search",
+                    tint = RecipeYellow
+                )
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(14.dp),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = {}
+            ),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = RecipeYellow,
+                unfocusedBorderColor = SearchBorderColor,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                cursorColor = RecipeYellow
             )
-        },
-        leadingIcon = {
-            Icon(
-                modifier = Modifier.size(20.dp),
-                painter = painterResource(R.drawable.ic_search),
-                contentDescription = "Search",
-                tint = RecipeYellow
-            )
-        },
-        singleLine = true,
-        shape = RoundedCornerShape(14.dp),
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Search
-        ),
-        keyboardActions = KeyboardActions(
-            onSearch = {}),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = RecipeYellow,
-            unfocusedBorderColor = SearchBorderColor,
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
-            cursorColor = RecipeYellow
         )
-    )
+
+        if (!isEditable) {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember {
+                            MutableInteractionSource()
+                        }
+                    ) {
+                        onClick()
+                    }
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)

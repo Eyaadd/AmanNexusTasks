@@ -15,16 +15,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class RecipeRepositoryImpl(
-    private val recipeApi: RecipeApi,
-    private val favoriteRecipeDao: FavoriteRecipeDao
+    private val recipeApi: RecipeApi, private val favoriteRecipeDao: FavoriteRecipeDao
 ) : RecipeRepository {
 
     override suspend fun getRecipes(): Result<List<RecipeSummaryUiModel>> {
         return safeCall {
-            recipeApi
-                .getRandomRecipes()
-                .recipes
-                .map { recipeDto ->
+            recipeApi.getRandomRecipes().recipes.map { recipeDto ->
                     recipeDto.toRecipeSummaryUiModel()
                 }
         }
@@ -34,13 +30,9 @@ class RecipeRepositoryImpl(
         category: RecipeCategory
     ): Result<List<RecipeSummaryUiModel>> {
         return safeCall {
-            recipeApi
-                .getPopularCategoryRecipes(
-                    query = category.query,
-                    type = category.type
-                )
-                .results
-                .map { recipeDto ->
+            recipeApi.getPopularCategoryRecipes(
+                    query = category.query, type = category.type
+                ).results.map { recipeDto ->
                     recipeDto.toRecipeSummaryUiModel()
                 }
         }
@@ -48,19 +40,14 @@ class RecipeRepositoryImpl(
 
     override suspend fun getRecentRecipes(): Result<List<RecipeSummaryUiModel>> {
         return safeCall {
-            recipeApi
-                .getRecentRecipes()
-                .results
-                .map { recipeDto ->
+            recipeApi.getRecentRecipes().results.map { recipeDto ->
                     recipeDto.toRecipeSummaryUiModel()
                 }
         }
     }
 
     override fun observeFavoriteRecipes(): Flow<List<RecipeSummaryUiModel>> {
-        return favoriteRecipeDao
-            .observeFavoriteRecipes()
-            .map { favoriteRecipes ->
+        return favoriteRecipeDao.observeFavoriteRecipes().map { favoriteRecipes ->
                 favoriteRecipes.map { favoriteRecipe ->
                     favoriteRecipe.toRecipeSummaryUiModel()
                 }
@@ -95,9 +82,17 @@ class RecipeRepositoryImpl(
         recipeId: Int
     ): Result<RecipeDetailsUiModel> {
         return safeCall {
-            recipeApi
-                .getRecipeDetails(recipeId)
-                .toRecipeDetailsUiModel()
+            recipeApi.getRecipeDetails(recipeId).toRecipeDetailsUiModel()
+        }
+    }
+
+    override suspend fun searchForRecipe(
+        query: String?
+    ): Result<List<RecipeSummaryUiModel>> {
+        return safeCall {
+            recipeApi.searchForRecipe(query).results.map { recipeDto ->
+                recipeDto.toRecipeSummaryUiModel()
+            }
         }
     }
 

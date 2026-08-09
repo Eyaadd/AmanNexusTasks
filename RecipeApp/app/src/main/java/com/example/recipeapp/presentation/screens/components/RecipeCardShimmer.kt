@@ -1,4 +1,4 @@
-package com.example.recipeapp.presentation.screens.home.components
+package com.example.recipeapp.presentation.screens.components
 
 
 import androidx.compose.foundation.background
@@ -81,6 +81,7 @@ fun RecipeCardShimmer(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

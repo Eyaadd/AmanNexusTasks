@@ -24,9 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.recipeapp.domain.model.RecipeSummaryUiModel
+import com.example.recipeapp.domain.model.SavedTab
 import com.example.recipeapp.presentation.screens.favorites.components.EmptySavedContent
 import com.example.recipeapp.presentation.screens.home.components.ErrorContent
-import com.example.recipeapp.presentation.screens.home.components.TrendingRecipeCard
+import com.example.recipeapp.presentation.screens.components.TrendingRecipeCard
 import com.example.recipeapp.presentation.theme.RecipeAppTheme
 import com.example.recipeapp.presentation.theme.RecipeYellow
 import com.example.recipeapp.presentation.theme.ScreenTextColor
@@ -116,7 +117,7 @@ fun FavoritesScreenContent(
                 )
             }
 
-            state.selectedTab == FavoritesContract.SavedTab.VIDEO -> {
+            state.selectedTab == SavedTab.VIDEO -> {
                 EmptySavedContent(
                     message = "No saved videos yet",
                     modifier = Modifier.fillMaxSize()
@@ -173,7 +174,7 @@ private fun FavoritesScreenContentPreview() {
         FavoritesScreenContent(
             state = FavoritesContract.FavoritesState(
                 isLoading = false,
-                selectedTab = FavoritesContract.SavedTab.RECIPES,
+                selectedTab = SavedTab.RECIPES,
                 favoriteRecipes = listOf(
                     RecipeSummaryUiModel(
                         id = 1,

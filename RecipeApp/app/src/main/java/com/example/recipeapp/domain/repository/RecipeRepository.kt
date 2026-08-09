@@ -32,4 +32,8 @@ interface RecipeRepository {
     suspend fun getRecipeDetails(
         recipeId: Int
     ): Result<RecipeDetailsUiModel>
+
+    suspend fun searchForRecipe(
+        query: String?
+    ):Result<List<RecipeSummaryUiModel>>
 }

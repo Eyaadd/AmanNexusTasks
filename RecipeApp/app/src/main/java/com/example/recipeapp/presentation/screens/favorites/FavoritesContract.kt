@@ -1,12 +1,11 @@
 package com.example.recipeapp.presentation.screens.favorites
 
 import com.example.recipeapp.domain.model.RecipeSummaryUiModel
+import com.example.recipeapp.domain.model.SavedTab
 
 object FavoritesContract {
 
-    enum class SavedTab {
-        VIDEO, RECIPES
-    }
+
 
     data class FavoritesState(
         val favoriteRecipes: List<RecipeSummaryUiModel> = emptyList(),
