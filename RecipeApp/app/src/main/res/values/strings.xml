@@ -43,7 +43,7 @@
     <string name="favorite">Favorite</string>
     <string name="search">Search</string>
 
-    <string name="home_header_prefix">Find </string>
+    <string name="home_header_prefix">Find</string>
     <string name="home_header_highlight">best recipes</string>
     <string name="home_header_suffix">\nfor cooking</string>
     <string name="trending_now">Trending Now🔥</string>

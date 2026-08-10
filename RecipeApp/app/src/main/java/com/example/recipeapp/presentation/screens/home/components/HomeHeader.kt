@@ -24,6 +24,7 @@ fun HomeHeader(
     Text(
         text = buildAnnotatedString {
             append(prefix)
+            append(" ")
 
             withStyle(
                 style = SpanStyle(
