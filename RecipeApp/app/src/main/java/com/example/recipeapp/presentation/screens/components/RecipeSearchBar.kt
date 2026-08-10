@@ -13,11 +13,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,7 +45,7 @@ fun RecipeSearchBar(
             readOnly = !isEditable,
             placeholder = {
                 Text(
-                    text = "Search recipes",
+                    text = stringResource(R.string.search_recipes),
                     color = SearchBorderColor
                 )
             },
@@ -51,7 +53,7 @@ fun RecipeSearchBar(
                 Icon(
                     modifier = Modifier.size(20.dp),
                     painter = painterResource(R.drawable.ic_search),
-                    contentDescription = "Search",
+                    contentDescription = stringResource(R.string.search),
                     tint = RecipeYellow
                 )
             },
@@ -66,8 +68,8 @@ fun RecipeSearchBar(
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = RecipeYellow,
                 unfocusedBorderColor = SearchBorderColor,
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                 cursorColor = RecipeYellow
             )
         )
@@ -96,5 +98,3 @@ fun RecipeSearchBarPreview() {
         query = "", onQueryChanged = {}, modifier = Modifier.padding(16.dp), onClick = {}
     )
 }
-
-

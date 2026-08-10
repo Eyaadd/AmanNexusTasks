@@ -15,25 +15,34 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.recipeapp.R
 import com.example.recipeapp.presentation.screens.profile.components.ProfileHeader
+import com.example.recipeapp.presentation.screens.profile.components.LanguageSelectionDialog
+import com.example.recipeapp.presentation.screens.profile.components.DisplayModeDialog
+import com.example.recipeapp.presentation.screens.profile.components.DISPLAY_MODE_DARK
+import com.example.recipeapp.presentation.screens.profile.components.DISPLAY_MODE_LIGHT
+import com.example.recipeapp.presentation.screens.profile.components.DISPLAY_MODE_SYSTEM
 import com.example.recipeapp.presentation.screens.profile.components.PermissionSettingsDialog
 import com.example.recipeapp.presentation.screens.profile.components.SettingItem
 import com.example.recipeapp.presentation.screens.profile.components.SettingsSection
 import com.example.recipeapp.presentation.theme.RecipeAppTheme
 import org.koin.androidx.compose.koinViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ProfileScreen(
@@ -41,6 +50,29 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collectLatest { effect ->
+            when (effect) {
+                is ProfileContract.ProfileEffect.ChangeLanguage -> {
+                    AppCompatDelegate.setApplicationLocales(
+                        LocaleListCompat.forLanguageTags(effect.languageTag)
+                    )
+                }
+
+                is ProfileContract.ProfileEffect.ChangeDisplayMode -> {
+                    val nightMode = when (effect.mode) {
+                        DISPLAY_MODE_LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+                        DISPLAY_MODE_DARK -> AppCompatDelegate.MODE_NIGHT_YES
+                        else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                    }
+                    AppCompatDelegate.setDefaultNightMode(nightMode)
+                }
+
+                is ProfileContract.ProfileEffect.ShowMessage -> Unit
+            }
+        }
+    }
 
     ProfileScreenContent(
         state = state,
@@ -56,6 +88,14 @@ fun ProfileScreenContent(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val selectedLanguageTag =
+        AppCompatDelegate.getApplicationLocales()[0]?.language
+            ?: java.util.Locale.getDefault().language
+    val selectedDisplayMode = when (AppCompatDelegate.getDefaultNightMode()) {
+        AppCompatDelegate.MODE_NIGHT_NO -> DISPLAY_MODE_LIGHT
+        AppCompatDelegate.MODE_NIGHT_YES -> DISPLAY_MODE_DARK
+        else -> DISPLAY_MODE_SYSTEM
+    }
 
     var locationDenialCount by rememberSaveable {
         mutableStateOf(0)
@@ -64,12 +104,6 @@ fun ProfileScreenContent(
         mutableStateOf(0)
     }
 
-    var showLocationSettingsDialog by rememberSaveable {
-        mutableStateOf(false)
-    }
-    var showNotificationSettingsDialog by rememberSaveable {
-        mutableStateOf(false)
-    }
 
     val notificationPermissionLauncher =
         rememberLauncherForActivityResult(
@@ -114,24 +148,56 @@ fun ProfileScreenContent(
         )
     }
 
-    if (showNotificationSettingsDialog) {
+    if (state.showNotificationSettingsDialog) {
         PermissionSettingsDialog(
-            permissionName = "notifications",
-            onDismiss = { showNotificationSettingsDialog = false },
+            permissionNameRes = R.string.permission_notifications,
+            onDismiss = {
+                onIntent(
+                    ProfileContract.ProfileIntent.ShowNotificationSettingsDialog(
+                        false
+                    )
+                )
+            },
             onOpenSettings = {
-                showNotificationSettingsDialog = false
+                onIntent(ProfileContract.ProfileIntent.ShowNotificationSettingsDialog(false))
                 openAppSettings()
             }
         )
     }
 
-    if (showLocationSettingsDialog) {
+    if (state.showLocationSettingsDialog) {
         PermissionSettingsDialog(
-            permissionName = "location",
-            onDismiss = { showLocationSettingsDialog = false },
+            permissionNameRes = R.string.permission_location,
+            onDismiss = {
+                onIntent(ProfileContract.ProfileIntent.ShowLocationSettingsDialog(false))
+            },
             onOpenSettings = {
-                showLocationSettingsDialog = false
+                onIntent(ProfileContract.ProfileIntent.ShowLocationSettingsDialog(false))
                 openAppSettings()
+            }
+        )
+    }
+
+    if (state.showLanguageDialog) {
+        LanguageSelectionDialog(
+            selectedLanguageTag = selectedLanguageTag,
+            onLanguageSelected = { languageTag ->
+                onIntent(ProfileContract.ProfileIntent.OnLanguageSelected(languageTag))
+            },
+            onDismiss = {
+                onIntent(ProfileContract.ProfileIntent.ShowLanguageDialog(false))
+            }
+        )
+    }
+
+    if (state.showDisplayModeDialog) {
+        DisplayModeDialog(
+            selectedMode = selectedDisplayMode,
+            onModeSelected = { mode ->
+                onIntent(ProfileContract.ProfileIntent.OnDisplayModeSelected(mode))
+            },
+            onDismiss = {
+                onIntent(ProfileContract.ProfileIntent.ShowDisplayModeDialog(false))
             }
         )
     }
@@ -140,7 +206,7 @@ fun ProfileScreenContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp)
     ) {
@@ -150,14 +216,14 @@ fun ProfileScreenContent(
             )
 
         SettingsSection(
-            title = "Account",
+            titleRes = R.string.profile_account,
             items = listOf(
                 SettingItem(
-                    label = "Email",
+                    labelRes = R.string.profile_email,
                     iconRes = R.drawable.ic_email,
                 ),
                 SettingItem(
-                    label = "Notifications",
+                    labelRes = R.string.profile_notifications,
                     iconRes = R.drawable.ic_notification,
                     isChecked = state.notificationsEnabled,
                     onCheckedChange = { enabled ->
@@ -170,7 +236,7 @@ fun ProfileScreenContent(
                                 )
                             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 if (notificationDenialCount >= MAX_PERMISSION_REQUESTS) {
-                                    showNotificationSettingsDialog = true
+                                    onIntent(ProfileContract.ProfileIntent.ShowNotificationSettingsDialog(true))
                                 } else {
                                     notificationPermissionLauncher.launch(
                                         Manifest.permission.POST_NOTIFICATIONS
@@ -187,7 +253,7 @@ fun ProfileScreenContent(
                     }
                 ),
                 SettingItem(
-                    label = "Location",
+                    labelRes = R.string.profile_location,
                     iconRes = R.drawable.ic_location,
                     isChecked = state.locationEnabled,
                     onCheckedChange = { enabled ->
@@ -200,7 +266,7 @@ fun ProfileScreenContent(
                                 )
                             } else {
                                 if (locationDenialCount >= MAX_PERMISSION_REQUESTS) {
-                                    showLocationSettingsDialog = true
+                                    onIntent(ProfileContract.ProfileIntent.ShowLocationSettingsDialog(true))
                                 } else {
                                     locationPermissionLauncher.launch(
                                         arrayOf(
@@ -224,27 +290,29 @@ fun ProfileScreenContent(
         )
 
         SettingsSection(
-            title = "Device",
+            titleRes = R.string.profile_device,
             items = listOf(
-                SettingItem("Language", R.drawable.ic_language) {
+                SettingItem(R.string.profile_language, R.drawable.ic_language) {
+                    onIntent(ProfileContract.ProfileIntent.ShowLanguageDialog(true))
                 },
-                SettingItem("Display mode", R.drawable.ic_display_mode) {
+                SettingItem(R.string.profile_display_mode, R.drawable.ic_display_mode) {
+                    onIntent(ProfileContract.ProfileIntent.ShowDisplayModeDialog(true))
                 }
             )
         )
 
         SettingsSection(
-            title = "System",
+            titleRes = R.string.profile_system,
             items = listOf(
-                SettingItem("Contact us", R.drawable.ic_contact) {
+                SettingItem(R.string.profile_contact_us, R.drawable.ic_contact) {
                 },
-                SettingItem("Term of use", R.drawable.ic_terms) {
+                SettingItem(R.string.profile_terms_of_use, R.drawable.ic_terms) {
                 },
-                SettingItem("About", R.drawable.ic_about) {
+                SettingItem(R.string.profile_about, R.drawable.ic_about) {
                 },
-                SettingItem("Check version", R.drawable.ic_version) {
+                SettingItem(R.string.profile_check_version, R.drawable.ic_version) {
                 },
-                SettingItem("Logout", R.drawable.ic_logout) {
+                SettingItem(R.string.profile_logout, R.drawable.ic_logout) {
                 }
             ),
             bottomPadding = 28.dp

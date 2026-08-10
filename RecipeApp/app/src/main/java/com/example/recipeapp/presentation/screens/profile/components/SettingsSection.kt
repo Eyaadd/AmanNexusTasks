@@ -12,32 +12,33 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recipeapp.R
-import com.example.recipeapp.presentation.theme.ProfileSecondaryText
+import androidx.annotation.StringRes
 import com.example.recipeapp.presentation.theme.RecipeYellow
-import com.example.recipeapp.presentation.theme.ScreenTextColor
 
 
 @Composable
 fun SettingsSection(
-    title: String,
+    @StringRes titleRes: Int,
     items: List<SettingItem>,
     modifier: Modifier = Modifier,
     bottomPadding: Dp = 16.dp
 ) {
     Column(modifier = modifier) {
         Text(
-            text = title,
-            color = ScreenTextColor,
+            text = stringResource(titleRes),
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 17.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 4.dp)
@@ -69,11 +70,11 @@ private fun SettingsRow(item: SettingItem) {
             tint = Color.Unspecified
         )
         Text(
-            text = item.label,
+            text = stringResource(item.labelRes),
             modifier = Modifier
                 .padding(start = 14.dp)
                 .weight(1f),
-            color = ProfileSecondaryText,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 14.sp
         )
 

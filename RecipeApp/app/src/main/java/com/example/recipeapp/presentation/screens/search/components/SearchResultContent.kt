@@ -2,6 +2,8 @@ package com.example.recipeapp.presentation.screens.search.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.example.recipeapp.R
 import com.example.recipeapp.domain.model.RecipeSummaryUiModel
 import com.example.recipeapp.presentation.screens.search.SearchContract
 import com.example.recipeapp.presentation.screens.search.SearchMessage
@@ -16,7 +18,7 @@ fun SearchResultContent(
     when {
         state.searchQuery.isBlank() -> {
             SearchMessage(
-                message = "Search for your favorite recipes",
+                message = stringResource(R.string.search_favorite_recipes),
                 modifier = modifier
             )
         }
@@ -34,7 +36,7 @@ fun SearchResultContent(
 
         state.searchResult.isEmpty() -> {
             SearchMessage(
-                message = "No recipes found",
+                message = stringResource(R.string.no_recipes_found),
                 modifier = modifier
             )
         }

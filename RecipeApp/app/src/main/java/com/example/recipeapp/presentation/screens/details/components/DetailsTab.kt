@@ -16,6 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.example.recipeapp.R
 import com.example.recipeapp.domain.model.DetailsTab
 
 @Composable
@@ -28,7 +30,7 @@ fun DetailsTabs(
         modifier = modifier.fillMaxWidth()
     ) {
         DetailsTabItem(
-            title = "Ingredient",
+            title = stringResource(R.string.ingredient_tab),
             isSelected = selectedTab == DetailsTab.INGREDIENTS,
             onClick = {
                 onTabSelected(DetailsTab.INGREDIENTS)
@@ -37,7 +39,7 @@ fun DetailsTabs(
         )
 
         DetailsTabItem(
-            title = "Direction",
+            title = stringResource(R.string.direction_tab),
             isSelected = selectedTab == DetailsTab.DIRECTIONS,
             onClick = {
                 onTabSelected(DetailsTab.DIRECTIONS)

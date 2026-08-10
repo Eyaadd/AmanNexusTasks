@@ -14,18 +14,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recipeapp.R
-import com.example.recipeapp.presentation.theme.ProfileSecondaryText
 import com.example.recipeapp.presentation.theme.RecipeYellow
-import com.example.recipeapp.presentation.theme.ScreenTextColor
 
 @Composable
 fun ProfileHeader(
@@ -37,7 +37,7 @@ fun ProfileHeader(
     ) {
         Image(
             painter = painterResource(R.drawable.ic_profile_placeholder),
-            contentDescription = "Profile photo",
+            contentDescription = stringResource(R.string.profile_photo),
             modifier = Modifier
                 .size(64.dp)
                 .border(1.5.dp, RecipeYellow, CircleShape)
@@ -47,11 +47,11 @@ fun ProfileHeader(
         Column {
             Text(
                 text = "Albert Hasan",
-                color = ScreenTextColor,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
-            Text(text = "@bertt_h.san", color = ProfileSecondaryText, fontSize = 13.sp)
+            Text(text = "@bertt_h.san", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 13.sp)
         }
     }
 }

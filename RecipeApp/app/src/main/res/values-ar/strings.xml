@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">تطبيق الوصفات</string>
+    <string name="duration_unavailable">المدة غير متاحة</string>
+    <string name="minutes">%1$d دقيقة</string>
+
+    <string name="profile_photo">صورة الملف الشخصي</string>
+    <string name="profile_account">الحساب</string>
+    <string name="profile_email">البريد الإلكتروني</string>
+    <string name="profile_notifications">الإشعارات</string>
+    <string name="profile_location">الموقع</string>
+    <string name="profile_device">الجهاز</string>
+    <string name="profile_language">اللغة</string>
+    <string name="choose_language">اختر اللغة</string>
+    <string name="language_english">الإنجليزية</string>
+    <string name="language_arabic">العربية</string>
+    <string name="profile_display_mode">وضع العرض</string>
+    <string name="choose_display_mode">اختر وضع العرض</string>
+    <string name="display_mode_system">إعداد النظام</string>
+    <string name="display_mode_light">فاتح</string>
+    <string name="display_mode_dark">داكن</string>
+    <string name="profile_system">النظام</string>
+    <string name="profile_contact_us">تواصل معنا</string>
+    <string name="profile_terms_of_use">شروط الاستخدام</string>
+    <string name="profile_about">حول التطبيق</string>
+    <string name="profile_check_version">التحقق من الإصدار</string>
+    <string name="profile_logout">تسجيل الخروج</string>
+    <string name="permission_required">الإذن مطلوب</string>
+    <string name="permission_settings_message">تم رفض إذن %1$s مرتين. يمكنك تفعيله من إعدادات التطبيق.</string>
+    <string name="permission_notifications">الإشعارات</string>
+    <string name="permission_location">الموقع</string>
+    <string name="cancel">إلغاء</string>
+    <string name="open_settings">فتح الإعدادات</string>
+
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_search">البحث</string>
+    <string name="nav_favorites">المفضلة</string>
+    <string name="nav_profile">الملف الشخصي</string>
+
+    <string name="unknown">غير معروف</string>
+    <string name="unknown_source">مصدر غير معروف</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="back">رجوع</string>
+    <string name="favorite">المفضلة</string>
+    <string name="search">بحث</string>
+
+    <string name="home_header_prefix">اعثر على </string>
+    <string name="home_header_highlight">أفضل الوصفات</string>
+    <string name="home_header_suffix">\nللطهي</string>
+    <string name="trending_now">الأكثر رواجًا 🔥</string>
+    <string name="recent_recipes">أحدث الوصفات</string>
+    <string name="popular_category">التصنيفات الشائعة</string>
+    <string name="category_vegetables">خضروات</string>
+    <string name="category_meat">لحوم</string>
+    <string name="category_salad">سلطة</string>
+    <string name="category_noodle">نودلز</string>
+    <string name="category_breakfast">إفطار</string>
+    <string name="by">بواسطة</string>
+    <string name="minutes_short">%1$d دقيقة</string>
+
+    <string name="saved_recipes">الوصفات المحفوظة</string>
+    <string name="saved_video_tab">فيديو</string>
+    <string name="saved_recipes_tab">الوصفات</string>
+    <string name="no_saved_videos">لا توجد فيديوهات محفوظة بعد</string>
+    <string name="no_saved_recipes">لا توجد وصفات محفوظة بعد</string>
+
+    <string name="search_recipes">ابحث عن وصفات</string>
+    <string name="search_favorite_recipes">ابحث عن وصفاتك المفضلة</string>
+    <string name="no_recipes_found">لم يتم العثور على وصفات</string>
+
+    <string name="menu_details">تفاصيل الوصفة</string>
+    <string name="watch_video">مشاهدة الفيديو</string>
+    <string name="ingredient_tab">المكونات</string>
+    <string name="direction_tab">الخطوات</string>
+    <string name="serves_people">تكفي %1$d أشخاص</string>
+    <string name="servings_unavailable">عدد الحصص غير متاح</string>
+    <string name="minutes_compact">%1$d دقيقة</string>
+    <string name="no_description_available">لا يوجد وصف متاح.</string>
+</resources>

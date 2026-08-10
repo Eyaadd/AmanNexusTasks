@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -77,14 +78,14 @@ fun PopularCategoryCard(
                 )
 
                 Text(
-                    text = "by",
+                    text = stringResource(R.string.by),
                     modifier = Modifier.padding(top = 4.dp),
                     color = Color(0xFFB98618),
                     fontSize = 12.sp
                 )
 
                 Text(
-                    text = recipe.sourceName ?: "Unknown source",
+                    text = recipe.sourceName ?: stringResource(R.string.unknown_source),
                     color = Color(0xFFB98618),
                     fontSize = 14.sp,
                     maxLines = 1,
@@ -98,7 +99,7 @@ fun PopularCategoryCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = recipe.readyInMinutes?.let { "$it Mins" } ?: "--",
+                    Text(text = recipe.readyInMinutes?.let { stringResource(R.string.minutes_short, it) } ?: "--",
                         color = Color(0xFF9F4C26),
                         fontSize = 12.sp)
 

@@ -15,6 +15,8 @@ import com.example.recipeapp.presentation.theme.RecipeYellow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
+import com.example.recipeapp.R
 
 @Composable
 fun ErrorContent(
@@ -39,7 +41,7 @@ fun ErrorContent(
             onClick = onRetry
         ) {
             Text(
-                text = "Retry",
+                text = stringResource(R.string.retry),
                 color = RecipeYellow,
                 fontWeight = FontWeight.Bold
             )
@@ -52,7 +54,7 @@ fun ErrorContent(
 @Composable
 private fun ErrorContentPreview() {
     ErrorContent(
-        message = "Something went wrong while loading recipes.",
+        message = stringResource(R.string.no_recipes_found),
         onRetry = {},
         modifier = Modifier
             .fillMaxWidth()
