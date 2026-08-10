@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,13 +62,13 @@ fun DetailsImageHeader(
                 Icon(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(R.drawable.ic_back),
-                    contentDescription = "Back",
+                    contentDescription = stringResource(R.string.back),
                     tint = Color.White
                 )
             }
 
             Text(
-                text = "Menu Details",
+                text = stringResource(R.string.menu_details),
                 color = Color.White,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
@@ -78,7 +79,7 @@ fun DetailsImageHeader(
 
         Text(
             text = durationMinutes
-                ?.let { "$it min" }
+                ?.let { stringResource(R.string.minutes_compact, it) }
                 ?: "--",
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -104,7 +105,7 @@ fun DetailsImageHeader(
                         R.drawable.ic_favorite
                     }
                 ),
-                contentDescription = "Favorite",
+                contentDescription = stringResource(R.string.favorite),
                 tint = Color.Unspecified,
                 modifier = Modifier.size(30.dp)
             )

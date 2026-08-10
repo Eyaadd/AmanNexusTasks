@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.recipeapp.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.recipeapp.domain.model.RecipeSummaryUiModel
 import com.example.recipeapp.domain.model.SavedTab
@@ -30,7 +33,6 @@ import com.example.recipeapp.presentation.screens.home.components.ErrorContent
 import com.example.recipeapp.presentation.screens.components.TrendingRecipeCard
 import com.example.recipeapp.presentation.theme.RecipeAppTheme
 import com.example.recipeapp.presentation.theme.RecipeYellow
-import com.example.recipeapp.presentation.theme.ScreenTextColor
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
@@ -75,9 +77,9 @@ fun FavoritesScreenContent(
             .padding(horizontal = 20.dp)
     ) {
         Text(
-            text = "Saved recipes",
+            text = stringResource(R.string.saved_recipes),
             modifier = Modifier.padding(top = 20.dp),
-            color = ScreenTextColor,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold
         )
@@ -119,14 +121,14 @@ fun FavoritesScreenContent(
 
             state.selectedTab == SavedTab.VIDEO -> {
                 EmptySavedContent(
-                    message = "No saved videos yet",
+                    message = stringResource(R.string.no_saved_videos),
                     modifier = Modifier.fillMaxSize()
                 )
             }
 
             state.favoriteRecipes.isEmpty() -> {
                 EmptySavedContent(
-                    message = "No saved recipes yet",
+                    message = stringResource(R.string.no_saved_recipes),
                     modifier = Modifier.fillMaxSize()
                 )
             }

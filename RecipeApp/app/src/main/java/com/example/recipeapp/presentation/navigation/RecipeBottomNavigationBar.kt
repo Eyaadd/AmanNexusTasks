@@ -3,6 +3,7 @@ package com.example.recipeapp.presentation.navigation
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -21,7 +23,7 @@ fun RecipeBottomNavigationBar(
     onNavigate: (AppRoute) -> Unit
 ) {
     NavigationBar(
-        containerColor = Color.White
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         bottomNavigationItems.forEach { item ->
 
@@ -56,12 +58,12 @@ fun RecipeBottomNavigationBar(
                                 item.unselectedIcon
                             }
                         ),
-                        contentDescription = item.label,
+                        contentDescription = stringResource(item.labelRes),
                         tint = Color.Unspecified
                     )
                 },
                 label = {
-                    Text(item.label)
+                    Text(stringResource(item.labelRes))
                 },
                 colors = NavigationBarItemDefaults.colors(
                     selectedTextColor = RecipeYellow,
