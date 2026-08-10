@@ -1,0 +1,10 @@
+package com.example.week2amantasksxml.models
+
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+data class User(
+    val id: Int,
+    val name: String,
+    val email: String,
+)
