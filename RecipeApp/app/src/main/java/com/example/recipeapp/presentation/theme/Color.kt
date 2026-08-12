@@ -13,3 +13,5 @@ val Pink40 = Color(0xFF7D5260)
 val RecipeYellow = Color(0xFFFFB800)
 val SearchBorderColor = Color(0xFFFFD76A)
 val ScreenTextColor = Color(0xFF181818)
+
+val ProfileSecondaryText = Color(0xFF696969)

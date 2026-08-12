@@ -15,6 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.recipeapp.R
 import com.example.recipeapp.domain.model.SavedTab
 import com.example.recipeapp.presentation.screens.favorites.FavoritesContract
 import com.example.recipeapp.presentation.theme.RecipeYellow
@@ -29,7 +31,7 @@ fun SavedRecipesTabs(
         modifier = modifier.fillMaxWidth()
     ) {
         SavedTabItem(
-            title = "Video",
+            title = stringResource(R.string.saved_video_tab),
             isSelected =
                 selectedTab == SavedTab.VIDEO,
             onClick = {
@@ -39,7 +41,7 @@ fun SavedRecipesTabs(
         )
 
         SavedTabItem(
-            title = "Recipes",
+            title = stringResource(R.string.saved_recipes_tab),
             isSelected =
                 selectedTab == SavedTab.RECIPES,
             onClick = {

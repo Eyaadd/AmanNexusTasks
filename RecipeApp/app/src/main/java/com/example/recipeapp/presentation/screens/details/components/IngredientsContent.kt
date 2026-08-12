@@ -4,6 +4,7 @@ package com.example.recipeapp.presentation.screens.details.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -11,6 +12,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.recipeapp.R
 
 @Composable
 fun IngredientsContent(
@@ -24,9 +27,9 @@ fun IngredientsContent(
     ) {
         Text(
             text = servings
-                ?.let { "Serves $it people" }
-                ?: "Servings unavailable",
-            color = Color(0xFF222222),
+                ?.let { stringResource(R.string.serves_people, it) }
+                ?: stringResource(R.string.servings_unavailable),
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
@@ -34,7 +37,7 @@ fun IngredientsContent(
         ingredients.forEach { ingredient ->
             Text(
                 text = ingredient,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 14.sp
             )
         }

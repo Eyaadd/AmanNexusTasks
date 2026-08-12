@@ -18,8 +18,8 @@ import androidx.navigation.toRoute
 import com.example.recipeapp.presentation.screens.details.DetailsScreen
 import com.example.recipeapp.presentation.screens.favorites.FavoritesScreen
 import com.example.recipeapp.presentation.screens.home.HomeScreen
+import com.example.recipeapp.presentation.screens.profile.ProfileScreen
 import com.example.recipeapp.presentation.screens.search.SearchScreen
-import com.example.recipeapp.presentation.screens.search.SearchScreenContent
 
 @Composable
 fun RecipeAppNavHost() {
@@ -34,23 +34,19 @@ fun RecipeAppNavHost() {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
 
-    val showBottomBar =
-        bottomBarRoutes.any{ route ->
-            currentDestination?.hasRoute(route) == true
-        }
+    val showBottomBar = bottomBarRoutes.any { route ->
+        currentDestination?.hasRoute(route) == true
+    }
 
     Scaffold(
         bottomBar = {
             if (showBottomBar) {
                 RecipeBottomNavigationBar(
-                    currentDestination = currentDestination,
-                    onNavigate = { route ->
+                    currentDestination = currentDestination, onNavigate = { route ->
                         navController.navigateToBottomBarRoute(route)
-                    }
-                )
+                    })
             }
-        }
-    ) { innerPadding ->
+        }) { innerPadding ->
 
         NavHost(
             navController = navController,
@@ -58,18 +54,15 @@ fun RecipeAppNavHost() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable<AppRoute.Home> {
-                HomeScreen(
-                    onNavigateToDetails = { recipeId ->
-                        navController.navigate(
-                            AppRoute.RecipeDetails(
-                                recipeId = recipeId
-                            )
+                HomeScreen(onNavigateToDetails = { recipeId ->
+                    navController.navigate(
+                        AppRoute.RecipeDetails(
+                            recipeId = recipeId
                         )
-                    },
-                    onNavigateToSearch = {
-                        navController.navigateToBottomBarRoute(AppRoute.Search)
-                    }
-                )
+                    )
+                }, onNavigateToSearch = {
+                    navController.navigateToBottomBarRoute(AppRoute.Search)
+                })
             }
 
             composable<AppRoute.Search> {
@@ -80,8 +73,7 @@ fun RecipeAppNavHost() {
                                 recipeId = recipeId
                             )
                         )
-                    }
-                )
+                    })
             }
 
             composable<AppRoute.Favorites> {
@@ -93,23 +85,20 @@ fun RecipeAppNavHost() {
                             )
                         )
 
-                    }
-                )
+                    })
             }
 
             composable<AppRoute.Profile> {
+                ProfileScreen()
             }
 
             composable<AppRoute.RecipeDetails> { backStackEntry ->
-                val route =
-                    backStackEntry.toRoute<AppRoute.RecipeDetails>()
+                val route = backStackEntry.toRoute<AppRoute.RecipeDetails>()
 
                 DetailsScreen(
-                    recipeId = route.recipeId,
-                    onNavigateBack = {
+                    recipeId = route.recipeId, onNavigateBack = {
                         navController.popBackStack()
-                    }
-                )
+                    })
             }
         }
     }
@@ -127,4 +116,3 @@ fun NavHostController.navigateToBottomBarRoute(
         restoreState = true
     }
 }
-

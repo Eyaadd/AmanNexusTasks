@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -17,6 +18,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.recipeapp.R
 import androidx.core.text.HtmlCompat
 
 @Composable
@@ -26,8 +29,9 @@ fun RecipeDetailsHeader(
     rating: Double?,
     modifier: Modifier = Modifier
 ) {
-    val formattedDescription = remember(description) {
-        description.toAnnotatedStringFromHtml()
+    val emptyDescription = stringResource(R.string.no_description_available)
+    val formattedDescription = remember(description, emptyDescription) {
+        description.toAnnotatedStringFromHtml(emptyDescription)
     }
 
     Column(
@@ -41,7 +45,7 @@ fun RecipeDetailsHeader(
             Text(
                 text = title,
                 modifier = Modifier.weight(1f),
-                color = Color(0xFF222222),
+                color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -58,16 +62,16 @@ fun RecipeDetailsHeader(
 
         Text(
             text = formattedDescription,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 14.sp,
             lineHeight = 21.sp
         )
     }
 }
 
-fun String.toAnnotatedStringFromHtml(): AnnotatedString {
+fun String.toAnnotatedStringFromHtml(emptyDescription: String): AnnotatedString {
     if (isBlank()) {
-        return AnnotatedString("No description available.")
+        return AnnotatedString(emptyDescription)
     }
 
     val spanned = HtmlCompat.fromHtml(

@@ -13,6 +13,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.recipeapp.R
 
 @Composable
 fun WatchVideoButton(
@@ -30,7 +32,7 @@ fun WatchVideoButton(
         )
     ) {
         Text(
-            text = "Watch Video",
+            text = stringResource(R.string.watch_video),
             color = Color.White,
             fontSize = 17.sp,
             fontWeight = FontWeight.Bold
