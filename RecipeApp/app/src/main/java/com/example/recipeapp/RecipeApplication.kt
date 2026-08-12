@@ -2,6 +2,7 @@ package com.example.recipeapp
 
 import android.app.Application
 import com.example.recipeapp.di.databaseModule
+import com.example.recipeapp.di.firebaseModule
 import com.example.recipeapp.di.ktorModule
 import com.example.recipeapp.di.repositoryModule
 import com.example.recipeapp.di.useCaseModule
@@ -14,7 +15,14 @@ class RecipeApplication : Application() {
     override fun onCreate() {
         startKoin {
             androidContext(this@RecipeApplication)
-            modules(ktorModule, repositoryModule, viewModelModule, databaseModule, useCaseModule)
+            modules(
+                ktorModule,
+                firebaseModule,
+                repositoryModule,
+                viewModelModule,
+                databaseModule,
+                useCaseModule
+            )
         }
     }
 }

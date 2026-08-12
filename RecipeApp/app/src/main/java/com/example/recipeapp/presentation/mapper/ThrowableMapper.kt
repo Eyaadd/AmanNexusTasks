@@ -26,6 +26,27 @@ fun Throwable.toUiMessage(): String {
         is AppException.Database ->
             "Unable to update your favorites."
 
+        is AppException.InvalidEmail ->
+            "Enter a valid email address."
+
+        is AppException.InvalidCredentials ->
+            "The email or password is incorrect."
+
+        is AppException.EmailAlreadyInUse ->
+            "An account already exists for this email."
+
+        is AppException.WeakPassword ->
+            "Choose a stronger password."
+
+        is AppException.UserDisabled ->
+            "This account has been disabled."
+
+        is AppException.TooManyRequests ->
+            "Too many attempts. Please try again later."
+
+        is AppException.Authentication ->
+            "Authentication failed. Please try again."
+
         is AppException.Unknown ->
             "Something went wrong."
 

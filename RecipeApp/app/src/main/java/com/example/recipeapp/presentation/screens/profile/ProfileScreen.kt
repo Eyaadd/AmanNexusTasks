@@ -46,10 +46,12 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ProfileScreen(
+    onNavigateToLogin: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
 
     LaunchedEffect(viewModel) {
         viewModel.effect.collectLatest { effect ->
@@ -70,6 +72,7 @@ fun ProfileScreen(
                 }
 
                 is ProfileContract.ProfileEffect.ShowMessage -> Unit
+                ProfileContract.ProfileEffect.NavigateToLogin -> onNavigateToLogin()
             }
         }
     }
@@ -313,6 +316,7 @@ fun ProfileScreenContent(
                 SettingItem(R.string.profile_check_version, R.drawable.ic_version) {
                 },
                 SettingItem(R.string.profile_logout, R.drawable.ic_logout) {
+                    onIntent(ProfileContract.ProfileIntent.OnLogoutClicked)
                 }
             ),
             bottomPadding = 28.dp

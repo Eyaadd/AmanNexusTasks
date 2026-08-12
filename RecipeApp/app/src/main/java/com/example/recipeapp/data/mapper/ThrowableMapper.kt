@@ -10,10 +10,48 @@ import io.ktor.client.plugins.ServerResponseException
 import io.ktor.http.HttpStatusCode
 import java.net.ConnectException
 import java.net.UnknownHostException
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 fun Throwable.toAppException(): AppException {
     return when (this) {
         is AppException -> this
+
+        is FirebaseAuthWeakPasswordException ->
+            AppException.WeakPassword(this)
+
+        is FirebaseAuthUserCollisionException ->
+            AppException.EmailAlreadyInUse(this)
+
+        is FirebaseAuthInvalidUserException -> {
+            if (errorCode == "ERROR_USER_DISABLED") {
+                AppException.UserDisabled(this)
+            } else {
+                AppException.InvalidCredentials(this)
+            }
+        }
+
+        is FirebaseAuthInvalidCredentialsException -> {
+            if (errorCode == "ERROR_INVALID_EMAIL") {
+                AppException.InvalidEmail(this)
+            } else {
+                AppException.InvalidCredentials(this)
+            }
+        }
+
+        is FirebaseTooManyRequestsException ->
+            AppException.TooManyRequests(this)
+
+        is FirebaseNetworkException ->
+            AppException.NoInternet(this)
+
+        is FirebaseAuthException ->
+            AppException.Authentication(this)
 
         is ClientRequestException -> {
             when (response.status) {

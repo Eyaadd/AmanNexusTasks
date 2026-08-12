@@ -1,6 +1,5 @@
 package com.example.recipeapp.data.repository
 
-import com.example.recipeapp.data.mapper.toAppException
 import com.example.recipeapp.data.source.local.dao.FavoriteRecipeDao
 import com.example.recipeapp.data.source.remote.api.RecipeApi
 import com.example.recipeapp.data.source.remote.mapper.toFavoriteRecipeEntity
@@ -10,7 +9,7 @@ import com.example.recipeapp.domain.model.RecipeCategory
 import com.example.recipeapp.domain.model.RecipeDetailsUiModel
 import com.example.recipeapp.domain.model.RecipeSummaryUiModel
 import com.example.recipeapp.domain.repository.RecipeRepository
-import kotlinx.coroutines.CancellationException
+import com.example.recipeapp.utils.safeCall
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -24,8 +23,7 @@ class RecipeRepositoryImpl(
                     recipeDto.toRecipeSummaryUiModel()
                 }
         }
-    }
-
+}
     override suspend fun getPopularCategoryRecipes(
         category: RecipeCategory
     ): Result<List<RecipeSummaryUiModel>> {
@@ -93,18 +91,6 @@ class RecipeRepositoryImpl(
             recipeApi.searchForRecipe(query).results.map { recipeDto ->
                 recipeDto.toRecipeSummaryUiModel()
             }
-        }
-    }
-
-    private suspend inline fun <T> safeCall(
-        crossinline operation: suspend () -> T
-    ): Result<T> {
-        return try {
-            Result.success(operation())
-        } catch (exception: CancellationException) {
-            throw exception
-        } catch (exception: Exception) {
-            Result.failure(exception.toAppException())
         }
     }
 }
