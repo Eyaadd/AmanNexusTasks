@@ -20,9 +20,14 @@ import com.example.recipeapp.presentation.screens.favorites.FavoritesScreen
 import com.example.recipeapp.presentation.screens.home.HomeScreen
 import com.example.recipeapp.presentation.screens.profile.ProfileScreen
 import com.example.recipeapp.presentation.screens.search.SearchScreen
+import com.example.recipeapp.presentation.screens.login.LoginScreen
+import com.example.recipeapp.presentation.screens.signup.SignUpScreen
+import com.example.recipeapp.domain.usecase.IsLoggedInUseCase
+import org.koin.compose.koinInject
 
 @Composable
 fun RecipeAppNavHost() {
+    val isLoggedInUseCase: IsLoggedInUseCase = koinInject()
     val bottomBarRoutes = setOf(
         AppRoute.Home::class,
         AppRoute.Search::class,
@@ -50,9 +55,35 @@ fun RecipeAppNavHost() {
 
         NavHost(
             navController = navController,
-            startDestination = AppRoute.Home,
+            startDestination = if (isLoggedInUseCase()) AppRoute.Home else AppRoute.Login,
             modifier = Modifier.padding(innerPadding)
         ) {
+            composable<AppRoute.Login> {
+                LoginScreen(
+                    onNavigateToHome = {
+                        navController.navigate(AppRoute.Home) {
+                            popUpTo<AppRoute.Login> { inclusive = true }
+                        }
+                    },
+                    onNavigateToSignUp = {
+                        navController.navigate(AppRoute.SignUp)
+                    }
+                )
+            }
+
+            composable<AppRoute.SignUp> {
+                SignUpScreen(
+                    onNavigateToHome = {
+                        navController.navigate(AppRoute.Home) {
+                            popUpTo<AppRoute.Login> { inclusive = true }
+                        }
+                    },
+                    onNavigateToLogin = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
             composable<AppRoute.Home> {
                 HomeScreen(onNavigateToDetails = { recipeId ->
                     navController.navigate(
@@ -89,7 +120,13 @@ fun RecipeAppNavHost() {
             }
 
             composable<AppRoute.Profile> {
-                ProfileScreen()
+                ProfileScreen(
+                    onNavigateToLogin = {
+                        navController.navigate(AppRoute.Login) {
+                            popUpTo(navController.graph.id) { inclusive = true }
+                        }
+                    }
+                )
             }
 
             composable<AppRoute.RecipeDetails> { backStackEntry ->

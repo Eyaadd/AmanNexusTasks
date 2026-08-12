@@ -76,4 +76,19 @@
     <string name="servings_unavailable">عدد الحصص غير متاح</string>
     <string name="minutes_compact">%1$d دقيقة</string>
     <string name="no_description_available">لا يوجد وصف متاح.</string>
+
+    <!-- Authentication -->
+    <string name="auth_welcome_back">مرحبًا بعودتك</string>
+    <string name="auth_login_subtitle">سجّل الدخول لمتابعة الطهي</string>
+    <string name="auth_create_account">إنشاء حساب</string>
+    <string name="auth_signup_subtitle">أنشئ حسابًا لحفظ وصفاتك المفضلة</string>
+    <string name="auth_email">البريد الإلكتروني</string>
+    <string name="auth_password">كلمة المرور</string>
+    <string name="auth_confirm_password">تأكيد كلمة المرور</string>
+    <string name="auth_show">إظهار</string>
+    <string name="auth_hide">إخفاء</string>
+    <string name="auth_login">تسجيل الدخول</string>
+    <string name="auth_sign_up">إنشاء حساب</string>
+    <string name="auth_no_account">ليس لديك حساب؟ أنشئ حسابًا</string>
+    <string name="auth_have_account">لديك حساب بالفعل؟ سجّل الدخول</string>
 </resources>

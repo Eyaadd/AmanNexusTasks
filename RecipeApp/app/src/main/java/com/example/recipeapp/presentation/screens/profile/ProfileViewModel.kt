@@ -8,8 +8,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.example.recipeapp.domain.usecase.LogoutUseCase
 
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(
+    private val logoutUseCase: LogoutUseCase
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileContract.ProfileState())
     val uiState = _uiState.asStateFlow()
@@ -58,6 +61,13 @@ class ProfileViewModel : ViewModel() {
                     _effect.send(
                         ProfileContract.ProfileEffect.ChangeDisplayMode(intent.mode)
                     )
+                }
+            }
+
+            ProfileContract.ProfileIntent.OnLogoutClicked -> {
+                logoutUseCase()
+                viewModelScope.launch {
+                    _effect.send(ProfileContract.ProfileEffect.NavigateToLogin)
                 }
             }
         }

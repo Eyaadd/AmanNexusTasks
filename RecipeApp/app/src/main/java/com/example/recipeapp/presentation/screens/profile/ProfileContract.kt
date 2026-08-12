@@ -45,11 +45,14 @@ object ProfileContract {
             val mode: String
         ) : ProfileIntent
 
+        data object OnLogoutClicked : ProfileIntent
+
     }
 
     sealed interface ProfileEffect {
         data class ShowMessage(val message: String) : ProfileEffect
         data class ChangeLanguage(val languageTag: String) : ProfileEffect
         data class ChangeDisplayMode(val mode: String) : ProfileEffect
+        data object NavigateToLogin : ProfileEffect
     }
 }
