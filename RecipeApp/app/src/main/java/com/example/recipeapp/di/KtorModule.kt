@@ -5,7 +5,7 @@ import com.example.recipeapp.BuildConfig
 import com.example.recipeapp.data.source.remote.api.RecipeApi
 import com.example.recipeapp.data.source.remote.api.RecipeApiImpl
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
+import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -20,7 +20,7 @@ import org.koin.dsl.module
 val ktorModule = module {
 
     single<HttpClient> {
-        HttpClient(Android) {
+        HttpClient(CIO) {
 
             expectSuccess = true
 

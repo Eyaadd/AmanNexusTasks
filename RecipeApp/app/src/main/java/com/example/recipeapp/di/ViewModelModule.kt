@@ -6,6 +6,8 @@ import com.example.recipeapp.presentation.screens.favorites.FavoritesViewModel
 import com.example.recipeapp.presentation.screens.home.HomeViewModel
 import com.example.recipeapp.presentation.screens.profile.ProfileViewModel
 import com.example.recipeapp.presentation.screens.search.SearchViewModel
+import com.example.recipeapp.presentation.screens.login.LoginViewModel
+import com.example.recipeapp.presentation.screens.signup.SignUpViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -45,6 +47,10 @@ val viewModelModule = module {
         )
     }
 
-    viewModel { ProfileViewModel() }
+    viewModel { ProfileViewModel(logoutUseCase = get()) }
+
+    viewModel { LoginViewModel(loginUseCase = get()) }
+
+    viewModel { SignUpViewModel(signUpUseCase = get()) }
 
 }

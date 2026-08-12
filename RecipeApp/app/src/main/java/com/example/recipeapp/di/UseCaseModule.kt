@@ -9,6 +9,10 @@ import com.example.recipeapp.domain.usecase.ObserveFavoriteRecipesUseCase
 import com.example.recipeapp.domain.usecase.ObserveIsFavoriteUseCase
 import com.example.recipeapp.domain.usecase.RemoveRecipeFromFavoritesUseCase
 import com.example.recipeapp.domain.usecase.SearchForRecipeUseCase
+import com.example.recipeapp.domain.usecase.IsLoggedInUseCase
+import com.example.recipeapp.domain.usecase.LoginUseCase
+import com.example.recipeapp.domain.usecase.LogoutUseCase
+import com.example.recipeapp.domain.usecase.SignUpUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -31,5 +35,13 @@ val useCaseModule = module {
     factory { GetRecipeDetailsUseCase(get()) }
 
     factory { SearchForRecipeUseCase(get()) }
+
+    factory { SignUpUseCase(get()) }
+
+    factory { LoginUseCase(get()) }
+
+    factory { LogoutUseCase(get()) }
+
+    factory { IsLoggedInUseCase(get()) }
 
 }
