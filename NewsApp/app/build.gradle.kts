@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
+
 }
 
 android {
@@ -87,11 +89,15 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     // Shimmer
-    implementation("com.valentinilk.shimmer:compose-shimmer:1.3.1")
+    implementation(libs.compose.shimmer)
 
 
     //LiveData
-    implementation("androidx.compose.runtime:runtime-livedata")
+    implementation(libs.androidx.compose.runtime.livedata)
+
+
+    //Serialization
+
 
 
 }
